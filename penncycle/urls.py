@@ -9,7 +9,8 @@ admin.autodiscover()
 from app.views import (
     Index, Signup, Locations, Bikes, welcome, StudentUpdate,
     verify_payment, verify_waiver, verify_pin, lookup,
-    bursar, credit, cash, combo, modify_payment, Stats
+    bursar, credit, cash, combo, modify_payment, Stats,
+    thanks
 )
 from app.dump import dump
 from mobile.views import sms, send_pin
@@ -35,7 +36,7 @@ urlpatterns = patterns(
     (r'^update/$', StudentUpdate.as_view()),
     (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
     (r'^safety-overview/$', TemplateView.as_view(template_name="safety_overview.html")),
-    (r'^thank.*$', TemplateView.as_view(template_name="thanks.html")),
+    (r'^thank.*$', thanks),
 
     # Backend-related
     (r'^verify_payment/$', verify_payment),

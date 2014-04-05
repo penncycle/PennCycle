@@ -319,3 +319,11 @@ class Bikes(TemplateView):
         context = super(Bikes, self).get_context_data()
         context['bikes'] = Bike.objects.filter(status="available")
         return context
+
+
+@csrf_exempt
+def thanks(request):
+    return render_to_response(
+        'thanks.html',
+        RequestContext(request, {})
+    )
