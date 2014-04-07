@@ -7,7 +7,7 @@ from django_localflavor_us.models import PhoneNumberField
 from django.db import models
 from django.core.validators import RegexValidator
 from django.db.models import Q
-
+from django.utils import timezone
 from south.modelsinspector import add_introspection_rules
 
 # Necessary because South hasn't been updated since localflavors was broken up.
@@ -282,7 +282,7 @@ class Ride(models.Model):
             return 'in'
 
     def __unicode__(self):
-        return u'%s on %s' % (self.rider, self.checkout_time)
+        return u'%s on %s' % (self.rider, timezone.localtime(self.checkout_time))
 
     @property
     def serialize(self):
