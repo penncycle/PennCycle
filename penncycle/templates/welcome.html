@@ -319,6 +319,8 @@
 	$(".circle").click(function() {
 		$(this).addClass("selected");
 		$(".circle").not(this).removeClass("selected");
+		$("#purchase_button").removeClass("disabled");
+
 		switch (this.id) {
 			case "day_plan":
 			$("#subtotal").html("3");
