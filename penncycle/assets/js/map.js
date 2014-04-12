@@ -3,7 +3,7 @@ $(document).ready(function() {
     center: new google.maps.LatLng(39.951600,-75.197794),
     zoom: 17,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-    zoomControl: true
+    zoomControl: true 
   };
   var station_counts = {};
   var map = new google.maps.Map(document.getElementById("map"), map_options);

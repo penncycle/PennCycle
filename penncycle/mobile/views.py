@@ -128,7 +128,7 @@ def handle_bikes():
     stations = [s for s in Station.objects.all() if s.bikes]
     summary = ""
     for station in stations:
-        bikes = station.bikes.order_by('name')
+        bikes = station.bikes.filter(status="available").order_by('name')
         if len(bikes) > 4:
             bikename_list = [bikes[i].name for i in range(4)]
         else:
