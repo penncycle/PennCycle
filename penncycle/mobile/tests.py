@@ -271,12 +271,6 @@ class TwilioTest(TestCase):
         self.assertTrue(expected in response)
         self.assertLess(len(response), 161)
 
-    def test_bikes(self):
-        expected = "At Rodin: 1, 2."
-        response = handle_bikes()
-        print(response)
-        self.assertTrue(expected in response)
-        self.assertLess(len(response), 161)
 
     def test_bikes_many(self):
         expected = "At Hill: 3, 4, 5, 6."
@@ -286,9 +280,11 @@ class TwilioTest(TestCase):
         self.assertLess(len(response), 161)
 
     def test_bikes_few(self):
-        expected = "At Rodin: 1, 2."
+        expected = "At Rodin: 1."
+        not_expected = "2"
         response = handle_bikes()
         print(response)
+        self.assertFalse(not_expected in response)
         self.assertTrue(expected in response)
         self.assertLess(len(response), 161)
 
