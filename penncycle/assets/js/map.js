@@ -39,15 +39,15 @@ $(document).ready(function() {
           labelClass: "marker"
         });
         content_string = "Available bikes: ";
-        var hasBike = false;
+        var bikeCount = 0;
         for (var k = available_bikes.length - 1; k >= 0; k--) { 
           var this_bike = available_bikes[k];
           if (this_bike.location == station.name) { 
             content_string += this_bike.name.toString() + " ";
-            hasBike = true;
+            bikeCount++;
           } 
         }
-        if (content_string != "Available bikes: ") { 
+        if (bikeCount != 0) { 
           bindInfoWindow(marker, map, infoWindow, content_string);
         } else { 
           bindInfoWindow(marker, map, infoWindow, "Available bikes: none");
