@@ -6422,7 +6422,7 @@ h6 {
   left: 3%;
   right: 3%;
   display: block;
-  float: left;
+  float: left;  
   margin: 0 10px 0 0;
 }
 #mapCanvas label {
