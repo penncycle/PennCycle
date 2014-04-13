@@ -2,16 +2,18 @@ import os
 import sys
 
 from unipath import Path
+from sys import path
 
 ADMINS = (
     ('Razzi Abuissa', 'razzi53@gmail.com'),
     ('Marcus Pan', 'marcuspanje@gmail.com'),
-    ('Peter Bryan', 'peterbbryan@gmail.com')
+    ('Peter Bryan', 'peterbbryan@gmail.com'),
+    ('Brian Shi', 'brishi@seas.upenn.edu')
 )
 
 MANAGERS = ADMINS
 
-ALLOWED_HOSTS = [".penncycle.org", ".herokuapp.com"]
+ALLOWED_HOSTS = [".penncycle.org", ".herokuapp.com", ".localhost"]
 
 TIME_ZONE = 'America/New_York'
 
@@ -37,11 +39,10 @@ MEDIA_URL = ''
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = PROJECT_DIR.child("assets")
-# STATIC_ROOT = "static"
-
+STATIC_ROOT = "static"
+    
 STATICFILES_DIRS = (
-    PROJECT_DIR.child("static"),
+    # PROJECT_DIR.child("static"),
 )
 
 STATIC_URL = '/static/'
