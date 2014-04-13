@@ -25,7 +25,9 @@ $(document).ready(function() {
       infoWindow = new google.maps.InfoWindow({
         content: "loading..."
       });    
-      var content_string = " ";  
+      var content_string = " "; 
+      var bikeCount;
+ 
       for (var j = stations.length - 1; j >= 0; j--) {
         station = stations[j];
         lng = station.longitude;
@@ -39,7 +41,7 @@ $(document).ready(function() {
           labelClass: "marker"
         });
         content_string = "Available bikes: ";
-        var bikeCount = 0;
+        bikeCount = 0;
         for (var k = available_bikes.length - 1; k >= 0; k--) { 
           var this_bike = available_bikes[k];
           if (this_bike.location == station.name) { 
