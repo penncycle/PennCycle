@@ -47,7 +47,7 @@ $(document).ready(function() {
             hasBike = true;
           } 
         }
-        if (hasBike) { 
+        if (content_string != "Available bikes: ") { 
           bindInfoWindow(marker, map, infoWindow, content_string);
         } else { 
           bindInfoWindow(marker, map, infoWindow, "Available bikes: none");
