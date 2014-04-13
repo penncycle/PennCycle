@@ -99,6 +99,9 @@ img {
 .google-maps img {
   max-width: none;
 }
+#map { 
+  max-width: none;
+}
 button,
 input,
 select,
