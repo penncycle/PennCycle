@@ -27,7 +27,6 @@ $(document).ready(function() {
       });    
       var content_string = " "; 
       var bikeCount;
- 
       for (var j = stations.length - 1; j >= 0; j--) {
         station = stations[j];
         lng = station.longitude;
@@ -52,12 +51,11 @@ $(document).ready(function() {
         if (bikeCount != 0) { 
           bindInfoWindow(marker, map, infoWindow, content_string);
         } else { 
-          bindInfoWindow(marker, map, infoWindow, "Available bikes: none");
+          bindInfoWindow(marker, map, infoWindow, "No available bikes");
         }
       }
     });
   });
-
   function bindInfoWindow(marker, map, infowindow, strDescription) {
     google.maps.event.addListener(marker, 'mouseover', function() {
         infowindow.setContent(strDescription);
