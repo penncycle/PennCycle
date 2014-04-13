@@ -39,13 +39,19 @@ $(document).ready(function() {
           labelClass: "marker"
         });
         content_string = "Available bikes: ";
+        var hasBike = false;
         for (var k = available_bikes.length - 1; k >= 0; k--) { 
           var this_bike = available_bikes[k];
           if (this_bike.location == station.name) { 
             content_string += this_bike.name.toString() + " ";
+            hasBike = true;
           } 
         }
-        bindInfoWindow(marker, map, infoWindow, content_string);
+        if (hasBike) { 
+          bindInfoWindow(marker, map, infoWindow, content_string);
+        } else { 
+          bindInfoWindow(marker, map, infoWindow, "Available bikes: none");
+        }
       }
     });
   });

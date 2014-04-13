@@ -6425,3 +6425,10 @@ h6 {
   float: left;
   margin: 0 10px 0 0;
 }
+#mapCanvas label {
+  width: auto;
+  display: inline;
+}
+#map img {
+  max-width: none;
+}
