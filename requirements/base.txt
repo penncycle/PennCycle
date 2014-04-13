@@ -24,3 +24,4 @@ unittest2==0.5.1
 wsgiref==0.1.2
 xlwt==0.7.4
 pytz==2013b
+dj-static==0.0.5
