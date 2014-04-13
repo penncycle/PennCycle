@@ -6428,9 +6428,6 @@ h6 {
 #mapCanvas label {
   width: auto;
   display: inline;
-  line-height: 1.35;
-  overflow: hidden;
-  white-space: nowrap;
 }
 #map img {
   max-width: none;
