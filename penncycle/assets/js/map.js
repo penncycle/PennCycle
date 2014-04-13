@@ -36,7 +36,7 @@ $(document).ready(function() {
         var marker = new MarkerWithLabel({
           position: pos,
           map: map,
-          icon: "https://s3.amazonaws.com/penncycle/img/station_icon.png",
+          icon: "https://s3.amazonaws.com/penncycle/img/PennCycle Logo 3 smallest-03.png",
           labelContent: station.name,
           labelClass: "marker"
         });
