@@ -40,7 +40,7 @@ $(document).ready(function() {
           labelContent: station.name,
           labelClass: "marker"
         });
-        content_string = "Available bikes: ";
+        content_string = station.name + ": ";
         bikeCount = 0;
         for (var k = available_bikes.length - 1; k >= 0; k--) { 
           var this_bike = available_bikes[k];
