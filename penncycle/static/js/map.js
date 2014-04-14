@@ -58,10 +58,11 @@ $(document).ready(function() {
   });
   function bindInfoWindow(marker, map, infowindow, strDescription) {
     google.maps.event.addListener(marker, 'mouseover', function() {
-        infowindow.setContent(strDescription);
+        infowindow.setContent('<div class="scrollFix">' + strDescription + '</div>');
         infowindow.open(map, marker);
     });  
   }
+
   // $.getJSON("/mobile/bike_data/", function(bikes) {
   //   for (var i = bikes.length - 1; i >= 0; i--) {
   //     bike = bikes[i];
