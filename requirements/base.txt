@@ -3,7 +3,6 @@ Pillow==2.4.0
 South==0.7.6
 Unipath==1.0
 anyjson==0.3.3
-argparse==1.2.1
 boto==2.9.2
 distribute==0.6.38
 django-braces==1.0.0

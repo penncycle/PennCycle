@@ -105,7 +105,7 @@ def station_data(request):
             "name": station.name,
             "latitude": station.latitude,
             "longitude": station.longitude
-        } for station in Station.objects.exclude(name="PSA")
+        } for station in Station.objects.all()
     ]
     return http_json(data)
 
@@ -181,9 +181,9 @@ def checkin(request):
     location = request.POST.get("station")
     penncard = request.POST.get("penncard")
     try:
-        station = Station.objects.get(name=location.title())
+        station = Station.objects.get(name=location)
     except:
-        logger.warn('Station missing: {}'.format(station))
+        logger.warn('Station missing: {}'.format(location))
         return json_failure("Station not found.")
     try:
         student = Student.objects.get(penncard=penncard)

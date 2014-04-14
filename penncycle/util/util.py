@@ -172,7 +172,7 @@ Bobby and the PennCycle Team
 <p>The PennCycle Team</p>""".format(student.name)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
     msg.attach_alternative(html_content, "text/html")
-    msg.attach_file("penncycle/assets/img/locked_bike.png")
+    msg.attach_file("penncycle/static/img/locked_bike.png")
     msg.send()
 
 
