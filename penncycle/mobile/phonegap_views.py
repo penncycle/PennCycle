@@ -181,9 +181,9 @@ def checkin(request):
     location = request.POST.get("station")
     penncard = request.POST.get("penncard")
     try:
-        station = Station.objects.get(name=location.title())
+        station = Station.objects.get(name=location)
     except:
-        logger.warn('Station missing: {}'.format(station))
+        logger.warn('Station missing: {}'.format(location))
         return json_failure("Station not found.")
     try:
         student = Student.objects.get(penncard=penncard)
