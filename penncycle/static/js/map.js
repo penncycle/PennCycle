@@ -30,7 +30,7 @@ $(document).ready(function() {
       marker_icon = new google.maps.MarkerImage(
         "https://s3.amazonaws.com/penncycle/img/PennCycle Logo 3 smallest-03.png", 
         undefined, undefined, undefined, 
-        new google.maps.Size(50,   50)
+        new google.maps.Size(50, 50)
       );
       for (var j = stations.length - 1; j >= 0; j--) {
         station = stations[j];

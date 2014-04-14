@@ -2,7 +2,5 @@
 *.db
 *.py~
 *.dump
-static
-manage_local.py
 .DS_Store
 _build
