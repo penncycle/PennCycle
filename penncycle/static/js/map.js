@@ -32,20 +32,20 @@ $(document).ready(function() {
         undefined, undefined, undefined, 
         new google.maps.Size(50, 50)
       );
+      empty_icon = new google.maps.MarkerImage(
+        "https://s3.amazonaws.com/penncycle/img/empty_station.png", 
+        undefined, undefined, undefined, 
+        new google.maps.Size(50, 50)
+      );
       for (var j = stations.length - 1; j >= 0; j--) {
         station = stations[j];
         lng = station.longitude;
         lat = station.latitude;
         pos = new google.maps.LatLng(lat, lng);
-        var marker = new MarkerWithLabel({
-          position: pos,
-          map: map,
-          icon: marker_icon,
-          labelContent: station.name,
-          labelClass: "marker"
-        });
+
         content_string = station.name + ": ";
         bikeCount = 0;
+
         for (var k = available_bikes.length - 1; k >= 0; k--) { 
           var this_bike = available_bikes[k];
           if (this_bike.location == station.name) { 
@@ -53,6 +53,18 @@ $(document).ready(function() {
             bikeCount++;
           } 
         }
+        if (bikeCount != 0) { 
+          icon = marker_icon;
+        } else { 
+          icon = empty_icon;
+        }
+        var marker = new MarkerWithLabel({
+          position: pos,
+          map: map,
+          icon: icon,
+          labelContent: station.name,
+          labelClass: "marker"
+        });
         if (bikeCount != 0) { 
           bindInfoWindow(marker, map, infoWindow, content_string);
         } else { 
