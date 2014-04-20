@@ -61,7 +61,7 @@ $(document).ready(function() {
         var marker = new MarkerWithLabel({
           position: pos,
           map: map,
-          icon: icon,
+          icon: marker_icon,
           labelContent: station.name,
           labelClass: "marker"
         });
