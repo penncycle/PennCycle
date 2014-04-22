@@ -27,6 +27,11 @@ $(document).ready(function() {
       });    
       var content_string = " "; 
       var bikeCount;
+      marker_icon = new google.maps.MarkerImage(
+        "https://s3.amazonaws.com/penncycle/img/PennCycle Logo 3 smallest-03.png", 
+        undefined, undefined, undefined, 
+        new google.maps.Size(50, 50)
+      );
       for (var j = stations.length - 1; j >= 0; j--) {
         station = stations[j];
         lng = station.longitude;
@@ -35,7 +40,7 @@ $(document).ready(function() {
         var marker = new MarkerWithLabel({
           position: pos,
           map: map,
-          icon: "https://s3.amazonaws.com/penncycle/img/PennCycle Logo 3 smallest-03.png",
+          icon: marker_icon,
           labelContent: station.name,
           labelClass: "marker"
         });
