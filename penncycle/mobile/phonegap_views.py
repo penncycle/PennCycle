@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from crispy_forms.utils import render_crispy_form
 
 from app.models import Student, Bike, Station
-from penncycle.util.util import welcome_email, send_pin_to_student, email_razzi
+from penncycle.util.util import welcome_email, send_pin_to_student, email_managers
 from penncycle.util.lend import make_ride, checkin_ride
 from .forms import SignupForm
 
@@ -131,7 +131,7 @@ def report(request):
     data = request.POST
     penncard = data.get("penncard")
     feedback = data.get("feedback")
-    email_razzi("Got feedback: {} from {}".format(feedback, penncard))
+    email_managers("Got feedback from the mobile app: {} from {}".format(feedback, penncard))
     return HttpResponse()
 
 @csrf_exempt
@@ -146,7 +146,6 @@ def checkout(request):
     except Student.DoesNotExist:
         return json_failure("Student does not exist.")
     if student.pin != pin:
-        email_razzi("pin mismatch! {}".format(locals()))
         return HttpResponseForbidden()
     if not student.can_ride:
         message = ""
