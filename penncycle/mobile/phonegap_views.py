@@ -62,7 +62,7 @@ def signup(request):
     return http_json(reply)
 
 @csrf_exempt
-def verify(request) :
+def verify(request):
     data = request.POST
     penncard = data.get("penncard")
     pin = data.get("pin")
@@ -130,7 +130,7 @@ def student_data(request):
 def report(request):
     data = request.POST
     penncard = data.get("penncard")
-    feedback = data.get("message")
+    feedback = data.get("feedback")
     email_razzi("Got feedback: {} from {}".format(feedback, penncard))
     return HttpResponse()
 
