@@ -1,7 +1,7 @@
 from base import *
 from os import environ
-
-DEBUG = True
+#can't seem to load static files when debug is true
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
