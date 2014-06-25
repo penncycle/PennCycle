@@ -1,8 +1,7 @@
 import os
-import sys
 
 from unipath import Path
-from sys import path
+
 
 ADMINS = (
     ('Razzi Abuissa', 'razzi53@gmail.com'),
@@ -39,10 +38,13 @@ MEDIA_URL = ''
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
-STATIC_ROOT = PROJECT_DIR.child("static")
-        
+# Now that we're using dj_static, we don't
+# have to python manage.py collectstatic or use this setting.
+
+# STATIC_ROOT = PROJECT_DIR.child("staticfiles")
+
 STATICFILES_DIRS = (
-    # PROJECT_DIR.child("static"),
+    PROJECT_DIR.child("static"),
 )
 
 STATIC_URL = '/static/'
