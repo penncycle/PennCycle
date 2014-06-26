@@ -15,3 +15,9 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+STATIC_ROOT = ''
+
+STATICFILES_DIRS = (
+    PROJECT_DIR.child('static'),
+)
