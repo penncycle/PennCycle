@@ -222,4 +222,4 @@ def feedback_email(message, penncard, student=None):
             )
         )
 
-    email_managers("App feedback: {}".format(message, content))
+    email_managers("App feedback: {}".format(message), content)
