@@ -35,7 +35,7 @@ MEDIA_ROOT = ''
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
 
-STATIC_URL = '/static/'
+STATIC_URL = 'http://www.penncycle.org/static/'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
