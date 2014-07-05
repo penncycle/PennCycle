@@ -13,8 +13,4 @@ DATABASES = {
 
 # dj_static uses STATIC_ROOT and doesn't use any STATICFILES_DIRS
 
-STATIC_ROOT = 'static'
-
-STATICFILES_DIRS = (
-    '',
-)
+STATIC_ROOT = PROJECT_DIR.child('static')

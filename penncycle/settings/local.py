@@ -16,7 +16,7 @@ DATABASES = {
     }
 }
 
-STATIC_ROOT = ''
+STATIC_ROOT = ''  # unused locally
 
 STATICFILES_DIRS = (
     PROJECT_DIR.child('static'),
