@@ -201,6 +201,7 @@ class Station(models.Model):
     hours = models.TextField(max_length=100, blank=True, null=True)
     picture = models.ImageField(upload_to='img/stations', blank=True, null=True)
     full_name = models.CharField(max_length=100, default="")
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.name
