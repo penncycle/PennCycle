@@ -35,18 +35,6 @@ MEDIA_ROOT = ''
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
 
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Now that we're using dj_static, we don't
-# have to python manage.py collectstatic or use this setting.
-
-# STATIC_ROOT = PROJECT_DIR.child("staticfiles")
-
-STATICFILES_DIRS = (
-    PROJECT_DIR.child("static"),
-)
-
 STATIC_URL = '/static/'
 
 STATICFILES_FINDERS = (
@@ -96,7 +84,6 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'app',
-    'boto',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -166,10 +153,3 @@ SEND_BROKEN_LINK_EMAILS = True
 
 LOGIN_URL = '/admin-login/'
 LOGOUT_URL = '/'
-
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-AWS_STORAGE_BUCKET_NAME = 'penncycle'
-AWS_PRELOAD_METADATA = True
-
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'

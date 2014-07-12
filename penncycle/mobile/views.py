@@ -10,6 +10,22 @@ from app.models import Student, Bike, Station
 from penncycle.util.util import email_razzi, send_pin_to_student, email_managers
 from penncycle.util.lend import make_ride, checkin_ride
 from django.utils import timezone
+#helper function that returns a string of active stations, or "None"
+def get_active_stations():
+    active_stations = Station.objects.filter(active=True)
+    stations_text = ""
+    n = len(active_stations)
+    if n == 0:
+        stations_text = "None."
+    else:
+        for i in range(0, n):
+            stations_text += active_stations[i].name
+            if i == n-1:
+                stations_text += "."
+            else:
+                stations_text += ", "
+
+    return stations_text
 
 def send_pin(request):
     penncard = request.GET.get("penncard")
@@ -72,10 +88,8 @@ def handle_checkout(student, body):
     return message
 
 def handle_stations():
-    message = (
-        "Stations: Rodin, Ware, Fisher, Huntsman, College Hall, "
-        "and Hill. To return a bike text 'Checkin Hill' or another station."
-    )
+    stations_text = get_active_stations()
+    message = "Stations: {} To return a bike text 'Checkin Hill' or another station.".format(stations_text)
     return message
 
 def handle_checkin(student, body):
@@ -89,16 +103,16 @@ def handle_checkin(student, body):
         checkin_display_time = timezone.localtime(ride.checkin_time)
         time_of_day = "{}:{}".format(checkin_display_time.hour, checkin_display_time.minute)
         return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
-
+    
     # Get their location and check the bike in
     location = None
-    stations = Station.objects.all()
+    stations = Station.objects.filter(active=True)
     for station in stations:
-        if station.name.lower() in body or (station.full_name and station.full_name.lower() in body):
+        if station.name.lower() in body.lower() or (station.full_name and station.full_name.lower() in body.lower()):
             location = station
     if not location:
         email_razzi("Station didn't match for checkin. Message was {}".format(body))
-        message = "Station not found. Options: Rodin, Ware, Huntsman, Fisher, College Hall, Hill, PSA. To return text 'Checkin Hill' or another station."
+        message = "Station not found. Options: {} To return text 'Checkin Hill' or another station.".format(get_active_stations())
         return message
     ride = student.ride_set.latest("checkout_time")
     checkin_ride(ride, location)
@@ -125,7 +139,7 @@ def handle_help(student, body):
         return message
 
 def handle_bikes():
-    stations = [s for s in Station.objects.all() if s.bikes]
+    stations = [s for s in Station.objects.filter(active=True) if s.bikes]
     summary = ""
     for station in stations:
         bikes = station.bikes.filter(status="available").order_by('name')

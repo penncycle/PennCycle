@@ -199,3 +199,27 @@ The PennCycle Team
         content,
         "messenger@penncycle.org", [payment.student.email]
     )
+
+
+def feedback_email(message, penncard, student=None):
+    if not student:
+        # In case the student does not exist in the database
+        content = (
+            'Student with penncard {}'
+            'has submitted feedback:'
+            '{}'.format(penncard, message)
+        )
+    else:
+        # this should happen 99% of the time
+        content = (
+            'Student {} with email {}'
+            'and penncard {} has submitted feedback:'
+            '{}'.format(
+                student.name,
+                student.email,
+                student.penncard,
+                message
+            )
+        )
+
+    email_managers("App feedback: {}".format(message), content)

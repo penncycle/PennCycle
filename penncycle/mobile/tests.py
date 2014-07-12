@@ -102,6 +102,11 @@ class TwilioTest(TestCase):
         )
         station.save()
         
+        inactive_station = Station(
+            name="PSA",
+            active=False
+        )
+        inactive_station.save()
 
         hill_station = Station(
             name="Hill"
@@ -290,9 +295,11 @@ class TwilioTest(TestCase):
 
     def test_stations(self):
         expected = "Rodin"
+        not_expected = "PSA"
         response = handle_stations()
         print(response)
         self.assertTrue(expected in response)
+        self.assertFalse(not_expected in response)
         self.assertLess(len(response), 161)
 
     def test_help(self):

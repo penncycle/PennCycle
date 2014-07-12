@@ -13,8 +13,15 @@ from django.template.loader import render_to_string
 from crispy_forms.utils import render_crispy_form
 
 from app.models import Student, Bike, Station
-from penncycle.util.util import welcome_email, send_pin_to_student, email_razzi
+
+from penncycle.util.util import (
+    welcome_email,
+    send_pin_to_student,
+    feedback_email
+)
+
 from penncycle.util.lend import make_ride, checkin_ride
+
 from .forms import SignupForm
 
 
@@ -125,14 +132,28 @@ def student_data(request):
     }
     return http_json(data)
 
+
 @csrf_exempt
 @require_POST
 def report(request):
     data = request.POST
     penncard = data.get("penncard")
     feedback = data.get("feedback")
-    email_razzi("Got feedback: {} from {}".format(feedback, penncard))
-    return HttpResponse()
+    if penncard and feedback:
+        try:
+            student = Student.objects.get(penncard=penncard)
+            feedback_email(feedback, penncard, student)
+        except Student.DoesNotExist:
+            feedback_email(feedback, penncard)
+
+        return HttpResponse()
+
+    else:
+        return json_failure(
+            "invalid POST fields: wanted 'penncard', "
+            "'feedback', got {}".format(data)
+        )
+
 
 @csrf_exempt
 @require_POST
@@ -146,7 +167,6 @@ def checkout(request):
     except Student.DoesNotExist:
         return json_failure("Student does not exist.")
     if student.pin != pin:
-        email_razzi("pin mismatch! {}".format(locals()))
         return HttpResponseForbidden()
     if not student.can_ride:
         message = ""
@@ -174,6 +194,7 @@ def checkout(request):
             .format(bike.name, bike.status)
         )
     return http_json({"combo": bike.combo})
+
 
 @csrf_exempt
 @require_POST
