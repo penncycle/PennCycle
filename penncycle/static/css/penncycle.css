@@ -6327,12 +6327,12 @@ a.badge:focus {
 img.profile {
   float: left;
   overflow: hidden;
-  margin: 10px 5px 0px 0px;
+  margin: 5px 5px 5px 0px;
   width: 90px;
   height: 90px;
 }
 .school {
-  line-height: 80%;
+  line-height: 90%;
 }
 body {
   font-weight: 200;
