@@ -103,7 +103,7 @@ def handle_checkin(student, body):
         checkin_display_time = timezone.localtime(ride.checkin_time)
         time_of_day = "{}:{}".format(checkin_display_time.hour, checkin_display_time.minute)
         return "You don't have any rides to check in. Your last ride was checked in at {} at {}.".format(time_of_day, ride.checkin_station)
-    
+
     # Get their location and check the bike in
     location = None
     stations = Station.objects.filter(active=True)
@@ -176,7 +176,7 @@ def handle_report(student, body):
         except:
             bike = None
     if bike:
-        bike.status = body
+        bike.status = body[:100]
         bike.save()
         email_body += "{} had its status changed to {}.".format(bike, body)
     else:
