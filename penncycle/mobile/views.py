@@ -121,7 +121,7 @@ def handle_checkin(student, body):
 
 def handle_help(student, body):
     if student.can_ride:
-        message = "Checkout: Checkout (number). Checkin: Checkin (location). Text Stations or Bikes for station/bike info. Report (issue) reports an issue. You can check out bikes"
+        message = "You can ride. Text commands: 'Checkout (bike id)'. 'Checkin (station)'. 'Stations' or 'Bikes' for station/bike info. 'Report (issue)' reports a bike issue."         
         return message
     else:
         current_rides = student.ride_set.filter(checkin_time=None)

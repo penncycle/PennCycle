@@ -14,7 +14,7 @@ from django.utils import timezone
 from braces.views import LoginRequiredMixin
 
 from .models import Student, Station, Bike, Payment, Plan, Info
-from util.util import email_razzi, welcome_email, payment_email
+from util.util import email_razzi, welcome_email, payment_email, send_welcome_text
 from .forms import SignupForm, UpdateForm
 
 
@@ -131,6 +131,7 @@ class Signup(CreateView):
 
 
         welcome_email(student)
+        send_welcome_text(student)
         self.request.session['penncard'] = student.penncard
         return HttpResponseRedirect('/safety-overview/')
 

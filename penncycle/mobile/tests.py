@@ -304,7 +304,7 @@ class TwilioTest(TestCase):
 
     def test_help(self):
         body = "help"
-        expected = "Checkout: Checkout (number)"
+        expected = "Checkout (bike id)"
         response = handle_help(self.student, body)
         print(response)
         self.assertTrue(expected in response)

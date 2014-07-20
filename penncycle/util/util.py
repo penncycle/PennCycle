@@ -16,6 +16,17 @@ def send_pin_to_student(student):
     except Exception as error:
         email_razzi("Pin send failed: {}, {}".format(student, error))
 
+def send_welcome_text(student):
+    try:
+        twilio_client.sms.messages.create(
+            to=student.twilio_phone,
+            body="Welcome to PennCycle. Text 'help' to get started.",
+            from_="+12156885468"
+        )
+    except Exception as error:
+        email_razzi("send welcome text failed: {}, {}".format(student, error))
+
+
 def email_razzi(message):
     send_mail(
         'PennCycle: {}'.format(
