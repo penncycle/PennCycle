@@ -42,7 +42,7 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 class BikeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'status', 'location', 'manufacturer', 'purchase_date')
+    list_display = ('name', 'status', 'location', 'combo_update', 'last_serviced_date')
     list_filter = ('purchase_date', 'manufacturer',)
     date_hierarchy = 'purchase_date'
 

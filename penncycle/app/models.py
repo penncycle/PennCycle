@@ -220,6 +220,7 @@ class Bike(models.Model):
     name = models.CharField(max_length=100, unique=True)
     manufacturer = models.ForeignKey(Manufacturer)
     purchase_date = models.DateField()
+    last_serviced_date = models.DateField(blank=True, null=True)
     color = models.CharField(max_length=30, blank=True)
     status = models.CharField(max_length=100, default='available')
     serial_number = models.CharField(max_length=100, blank=True)
@@ -228,6 +229,7 @@ class Bike(models.Model):
     combo = models.CharField(max_length=4, blank=True)
     combo_update = models.DateField()
     location = models.ForeignKey(Station, default=2)
+    
 
     @property
     def knows_combo(self):
