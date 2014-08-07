@@ -63,12 +63,12 @@ def welcome(request):
     context = {
         "student": student
     }
-   # return render_to_response("welcome.html", RequestContext(request, context))
-    return render_to_response("welcome_onlydayplan.html", RequestContext(request, context))
+    return render_to_response("welcome.html", RequestContext(request, context))
+    #return render_to_response("welcome_onlydayplan.html", RequestContext(request, context))
 
 
 class Index(TemplateView):
-    template_name = 'index_onlydayplan.html'
+    template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
         context = {
