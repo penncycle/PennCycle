@@ -6,6 +6,15 @@
 
 {% block css %}
 <style>
+    #posblock {
+        position: absolute;
+        top: 100px;
+        left: 300px;
+        width: 100px;
+        height: 100px;
+        background: #f00;
+    }
+
 	.circle {
 		width: 125px;
 		height: 125px;
@@ -57,6 +66,40 @@
 	}
 	.disable, .renew, .pay_by_credit, .delete {
 		cursor: pointer;
+	}
+
+	/* overlay_modal, modal, content_modal, close_modal, for modal window to display waiver*/
+	.overlay_mymodal {
+    	position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    background: rgba(0, 0, 0, 0.5);
+	}
+	.mymodal {
+	    position: absolute;
+	    background: rgba(255,255,255,1.0);
+	    border-radius: 14px;
+	    padding: 8px; 
+        overflow: scroll;
+	}
+	.content_mymodal {
+	    border-radius: 8px;
+	    backgound: #fff;
+	    padding: 20px;
+	}
+
+	.close_mymodal {
+	    position: absolute;
+	    /*background: "{{ STATIC_URL}}img/close_x.png" 0 0 no-repeat;
+	    background-size: 25px 25px;
+	    width: 25px;
+	    height: 25px;
+	    display: block;
+	    text-indent: -9999px;to hide text*/
+	    top: 0px;
+	    right: 5px;
 	}
 </style>
 {% endblock %}
@@ -194,14 +237,10 @@
 	</div>
 	{% if not student.waiver_signed %}
 	<h4>You must sign the following waiver before you are eligible to ride.</h4>
-	<div class='waiver-wrapper'>
-		{% include "waiver.html" %}
-	</div>
-	<br>
-	<button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button>
-	<span id="waiver-result"></span>
-	<br>
-	<label>Clicking this button counts as your digital signature and is legally binding</label>
+	<div class='waiver'>
+        <button id="display_waiver">Read and Sign Waiver</button>
+       	
+    </div> 
 	{% endif %}
 </div>
 <div class="span5">
@@ -291,6 +330,7 @@
 			$("#payment_info").hide();
 		});
 	});
+/*
 	$("#accept").click(function() {
 		$.post(
 			"/verify_waiver/",
@@ -304,7 +344,7 @@
 			location.reload();
 		}
 		);
-	});
+	});*/
 	function toggle_renew() {
 		if ($("input[name=payment]:checked").val() == "bursar") {
 			if ($("#plan_name").html() != "Day") {
@@ -396,5 +436,108 @@
 			});
 		}
 	});
+
+	$modal = (function() {
+        var
+        method = {},
+        $overlay,
+        $content,
+        $close,
+        $modal
+
+        method.center = function() {
+            var top, left;
+            top = Math.max($(window).height() - $modal.outerHeight(), 0)/2;
+            left = Math.max($(window).width() - $modal.outerWidth(), 0)/2;
+
+
+            $modal.css({
+               top: top + $(window).scrollTop(),
+               left: left + $(window).scrollLeft()
+               
+            });
+
+        };
+
+
+        method.open = function(settings) {
+            $content.empty().append(settings.content);
+            $modal.css({
+                width: settings.width || 'auto',
+                height: settings.height || 'auto'
+            });
+            method.center();
+            $(window).bind('resize.modal', method.center);
+
+            $modal.show();
+            $overlay.show();
+           
+
+
+        };
+
+        method.close = function() {
+            $content.empty();
+            $modal.hide();
+            $overlay.hide();
+            $(window).unbind('resize.modal');
+        };
+
+
+        $overlay = $('<div class="overlay_mymodal"></div>');
+        $modal = $('<div class="mymodal"></div>');
+        $content = $('<div class="content_mymodal"></div>');
+        $close = $('<a class="close_mymodal" href="#">close</a>');
+        $modal.append($content, $close);
+        $overlay.hide();
+        $modal.hide();
+
+        $(document).ready(function() {
+        	$("body").append($overlay, $modal);
+  	
+        });
+      
+        $close.click(function(e) {
+            e.preventDefault();
+            method.close();
+        });
+            
+        return method;
+
+    }());
+    $accept_waiver_button = ('<button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button><span id="waiver-result"></span><label>Clicking this button counts as your digital signature and is legally binding</label>');
+ 
+     
+    /*waiver modal window*/
+    $("#display_waiver").click(function() {
+        var $ht = 0.75*$(window).height();
+        var $wt = 0.75*$(window).width();
+        var $text = $("<h4><i>Please sign at the bottom of the waiver</i></h4>");
+    //display waiver     
+       	$.get("/waiver", function(data) {
+            $text.append(data, $accept_waiver_button);
+            //action for accepting waiver
+	    	$("#accept").click(function() {
+	            
+			    $.post(
+				    "/verify_waiver/",
+				    {}, // The penncard is in the session
+				    function(data) {
+				    if (data.success) {
+					    $("#waiver-result").html("Successfully submitted waiver.");
+
+				    } else {
+					    $("#waiver-result").html("There was a problem with our server. Reloading data...");
+				    }
+				    location.reload();
+			        });
+		    	});
+	        });
+	        
+        $modal.open({content: $text, height: $ht, width: $wt});
+    });
+
 </script>
+
+
 {% endblock %}

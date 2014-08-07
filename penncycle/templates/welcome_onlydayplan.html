@@ -58,6 +58,40 @@
 	.disable, .renew, .pay_by_credit, .delete {
 		cursor: pointer;
 	}
+/* overlay_modal, modal, content_modal, close_modal, for modal window to display waiver*/
+.overlay_modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity = 0.5;
+    filter: alpha(opacity=50);
+}
+.modal {
+    position: absolute;
+    background: rgba(0,0,0,0.2);
+    border-radius: 14px;
+    padding: 8px;
+}
+.content_modal {
+    border-radius: 8px;
+    backgound: #fff;
+    padding: 20px;
+}
+
+.close_modal {
+    position: absolute;
+    background: url(static/img/close_x.png) 0 0 no-repeat;
+    background-size: 25px 25px;
+    width: 25px;
+    height: 25px;
+    display: block;
+    text-indent: -9999px;/*to hide text*/
+    top: 0px;
+    right: 0px;
+}
 </style>
 {% endblock %}
 
@@ -196,9 +230,13 @@
 	</div>
 	{% if not student.waiver_signed %}
 	<h4>You must sign the following waiver before you are eligible to ride.</h4>
-	<div class='waiver-wrapper'>
+	<div class="waiver-wrapper">
 		{% include "waiver.html" %}
 	</div>
+    <div class ="waiver">
+        <button class='waiver_test'>test</button>
+        <p id="p_test">See if you can hide me</p>
+    </div>
 	<br>
 	<button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button>
 	<span id="waiver-result"></span>
@@ -384,5 +422,84 @@
 			});
 		}
 	});
+
+    $modal = (function() {
+        var
+        method = {},
+        $overlay,
+        $content,
+        $close,
+        $modal
+
+        method.center = function() {
+            var top, left;
+            top = Math.max($(window).height() - $modal.outerHeight(), 0)/2;
+            left = Math.max($(window).width() + $modal.outerWidth(), 0)/2;
+
+            $modal.css({
+                top: top + $(window).scrollTop(),
+                left: top + $(window).scrollLeft()
+            });
+        };
+
+        
+
+        method.open = function(settings) {
+
+            $content.empty().append(settings.content);
+            $modal.css({
+                width: settings.width || 'auto',
+                height: settings.height || 'auto'
+            });
+            $modal.center();
+            $(window).bind('resize.modal', modal.center);
+
+            $modal.show();
+            $overlay.show();
+
+        };
+
+               
+
+        method.close = function() {
+            $content.empty();
+            $modal.hide();
+            $overlay.hide();
+            $(window).unbind('resize.modal');
+        };
+
+
+        $overlay = $('<div class="overlay_modal"></div>');
+        $modal = $('<div class="modal"</div>');
+        $content = $('<div class="content_modal"></div>');
+        $close = $('<a class="close_modal" href="#">close</a>');
+
+        $overlay.hide();
+        $modal.hide();
+
+
+        
+
+        $modal.append($content, $close);
+        $(document).ready(function() {
+        	$(".waiver").append($overlay, $modal);
+  	
+        });
+      
+        $close.click(function(e) {
+            e.preventDefault();
+            method.close();
+        });
+            
+        return method;
+
+    }());
+
+    /*waiver modal window*/
+    $(".waiver_test").click(function() {
+       	
+        $modal.open({content: "Hello, I'm a modal window"});
+    });
+        
 </script>
 {% endblock %}
