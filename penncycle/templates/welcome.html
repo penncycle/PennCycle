@@ -92,12 +92,6 @@
 
 	.close_mymodal {
 	    position: absolute;
-	    /*background: "{{ STATIC_URL}}img/close_x.png" 0 0 no-repeat;
-	    background-size: 25px 25px;
-	    width: 25px;
-	    height: 25px;
-	    display: block;
-	    text-indent: -9999px;to hide text*/
 	    top: 0px;
 	    right: 5px;
 	}
@@ -177,7 +171,7 @@
 		<div class="span4">
 			<div class="circle text-center purchased" id="day_plan">
 				<span class="plan-name">Day</span>
-				<span class="price">$5</span>
+				<span class="price">${{ dayPrice }}/day</span>
 			</div>
 			<br>
 			<div>Good for one 24-hour checkout.</div>
@@ -185,7 +179,7 @@
 		<div class="span4">
 			<div class="circle text-center" id="basic_plan">
 				<span class="plan-name">Basic</span>
-				<span class="price">$20/month</span>
+				<span class="price">${{ basicPrice }}/month</span>
 			</div>
 			<br>
 			<div>Unlimited 24-hour checkouts. $5 for each day the bike is checked in late.</div>
@@ -193,7 +187,7 @@
 		<div class="span4">
 			<div class="circle text-center purchased" id="unlimited_plan">
 				<span class="plan-name">Unlimited</span>
-				<span class="price">$35/month</span>
+				<span class="price">${{ unlimitedPrice }}/month</span>
 			</div>
 			<br>
 			<div>
@@ -360,28 +354,30 @@
 		$(this).addClass("selected");
 		$(".circle").not(this).removeClass("selected");
 		$("#purchase_button").removeClass("disabled");
+        var basePriceStr = "0";
         var basePrice = 0;
         var tax = 0;
         var total = 0;
 		switch (this.id) {
 			case "day_plan":
-                basePrice = 5;
+                basePriceStr = "{{ dayPrice }}";
 			    $("#purchase_button").html("Purchase Day Plan");
 			    $("#plan_name").html("Day");
 			    break;
 			case "basic_plan":
-                basePrice = 20;
+                basePriceStr = "{{ basicPrice }}";
 			    $("#purchase_button").html("Purchase Basic Plan");
 			    $("#plan_name").html("Basic");
 			    break;
 			case "unlimited_plan":
-                basePrice = 35;
+                basePriceStr = "{{ unlimitedPrice }}";
 			    $("#purchase_button").html("Purchase Unlimited Plan");
 			    $("#plan_name").html("Unlimited");
 			    break;
 		}
+        basePrice = parseInt(basePriceStr); 
         tax = basePrice*0.08;
-        total = basePrice * 1.08; 
+        total = basePrice*1.08; 
 		$("#subtotal").html(basePrice.toFixed(2));
 		$("#tax").html(tax.toFixed(2));
 		$("#total").html(total.toFixed(2));

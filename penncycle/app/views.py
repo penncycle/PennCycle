@@ -17,6 +17,9 @@ from .models import Student, Station, Bike, Payment, Plan, Info
 from util.util import email_razzi, welcome_email, payment_email, send_welcome_text
 from .forms import SignupForm, UpdateForm
 
+dayPrice = Plan.objects.get(name='Day Plan').cost
+basicPrice = Plan.objects.get(name='Basic Plan').cost
+unlimitedPrice = Plan.objects.get(name='Unlimited Plan').cost
 
 def lookup(request):
     penncard = request.GET.get("penncard")
@@ -26,7 +29,6 @@ def lookup(request):
     else:
         messages.info(request, "Fill out the form below to sign up!")
         return HttpResponseRedirect("/signup/?penncard={}".format(penncard))
-
 
 def verify_pin(request):
     data = request.POST
@@ -61,7 +63,10 @@ def welcome(request):
     except Student.DoesNotExist:
         return HttpResponseRedirect("/signin/")
     context = {
-        "student": student
+        "student": student, 
+        "dayPrice" : dayPrice, 
+        "basicPrice" : basicPrice,
+        "unlimitedPrice" : unlimitedPrice
     }
     return render_to_response("welcome.html", RequestContext(request, context))
     #return render_to_response("welcome_onlydayplan.html", RequestContext(request, context))
@@ -79,7 +84,10 @@ class Index(TemplateView):
                 "location": bike.location.name,
                 "latitude": bike.location.latitude,
                 "longitude": bike.location.longitude
-            } for bike in Bike.objects.all()]
+            } for bike in Bike.objects.all()],
+            "dayPrice" : dayPrice, 
+            "basicPrice" : basicPrice,
+            "unlimitedPrice" : unlimitedPrice
         }
         return context
 
