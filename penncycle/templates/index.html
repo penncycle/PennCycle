@@ -74,7 +74,7 @@
         </div>
 
         <div class="span6 well" style="padding">
-          <h3 id="variable_plan">Basic Plan: $9/month</h3>
+          <h3 id="variable_plan">Basic Plan: $20/month</h3>
           <h4 id="variable_description">Unlimited 24-hour rides.</h4>
           <form method="GET" action="/lookup/">
             <input type="text" name="penncard" maxlength="8" placeholder="Enter your PennCard">
@@ -92,7 +92,7 @@
           <div class="span3 offset1">
             <div class="circle" id="day_plan">
               <span class="plan-name">Day Plan</span>
-              <span class="price">$3</span>
+              <span class="price">$5</span>
             </div>
             <br>
               <div>Good for one 24-hour checkout.</div>
@@ -100,7 +100,7 @@
           <div class="span3 offset1">
             <div class="circle selected" id="month_plan">
               <span class="plan-name">Basic Plan</span>
-              <span class="price">$9/month</span>
+              <span class="price">$20/month</span>
             </div>
             <br>
             <div>Unlimited 24-hour checkouts. $5 for each day the bike is checked in late.</div>
@@ -108,7 +108,7 @@
           <div class="span3 offset1">
             <div class="circle" id="unlimited_plan">
               <span class="plan-name">Unlimited Plan</span>
-              <span class="price">$29/month</span>
+              <span class="price">$35/month</span>
             </div>
             <br>
             <div>
@@ -145,15 +145,15 @@
       $(this).addClass("selected");
       switch (this.id) {
         case "day_plan":
-        $("#variable_plan").hide().html("Day Plan: $3/day").fadeIn('slow');
+        $("#variable_plan").hide().html("Day Plan: $5/day").fadeIn('slow');
         $("#variable_description").hide().html("A 24-hour bike checkout.").fadeIn('slow');
         break;
         case "month_plan":
-          $("#variable_plan").hide().html("Basic Plan: $9/month").fadeIn('slow');
+          $("#variable_plan").hide().html("Basic Plan: $20/month").fadeIn('slow');
           $("#variable_description").hide().html("Unlimited 24-hour rides.").fadeIn('slow');
         break;
         case "unlimited_plan":
-          $("#variable_plan").hide().html("Unlimited Plan: $29/month").fadeIn('slow');
+          $("#variable_plan").hide().html("Unlimited Plan: $35/month").fadeIn('slow');
           $("#variable_description").hide().html("Unlimited checkouts for however long you like.").fadeIn('slow')
         break;
     }

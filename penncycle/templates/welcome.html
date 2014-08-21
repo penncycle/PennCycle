@@ -177,7 +177,7 @@
 		<div class="span4">
 			<div class="circle text-center purchased" id="day_plan">
 				<span class="plan-name">Day</span>
-				<span class="price">$3</span>
+				<span class="price">$5</span>
 			</div>
 			<br>
 			<div>Good for one 24-hour checkout.</div>
@@ -185,7 +185,7 @@
 		<div class="span4">
 			<div class="circle text-center" id="basic_plan">
 				<span class="plan-name">Basic</span>
-				<span class="price">$9/month</span>
+				<span class="price">$20/month</span>
 			</div>
 			<br>
 			<div>Unlimited 24-hour checkouts. $5 for each day the bike is checked in late.</div>
@@ -193,7 +193,7 @@
 		<div class="span4">
 			<div class="circle text-center purchased" id="unlimited_plan">
 				<span class="plan-name">Unlimited</span>
-				<span class="price">$29/month</span>
+				<span class="price">$35/month</span>
 			</div>
 			<br>
 			<div>
@@ -360,30 +360,32 @@
 		$(this).addClass("selected");
 		$(".circle").not(this).removeClass("selected");
 		$("#purchase_button").removeClass("disabled");
-
+        var basePrice = 0;
+        var tax = 0;
+        var total = 0;
 		switch (this.id) {
 			case "day_plan":
-			$("#subtotal").html("3");
-			$("#tax").html("0.24");
-			$("#total").html("3.24");
-			$("#purchase_button").html("Purchase Day Plan");
-			$("#plan_name").html("Day");
-			break;
+                basePrice = 5;
+			    $("#purchase_button").html("Purchase Day Plan");
+			    $("#plan_name").html("Day");
+			    break;
 			case "basic_plan":
-			$("#subtotal").html("9");
-			$("#tax").html("0.72");
-			$("#total").html("9.72");
-			$("#purchase_button").html("Purchase Basic Plan");
-			$("#plan_name").html("Basic");
-			break;
+                basePrice = 20;
+			    $("#purchase_button").html("Purchase Basic Plan");
+			    $("#plan_name").html("Basic");
+			    break;
 			case "unlimited_plan":
-			$("#subtotal").html("29");
-			$("#tax").html("2.32");
-			$("#total").html("31.32");
-			$("#purchase_button").html("Purchase Unlimited Plan");
-			$("#plan_name").html("Unlimited");
-			break;
+                basePrice = 35;
+			    $("#purchase_button").html("Purchase Unlimited Plan");
+			    $("#plan_name").html("Unlimited");
+			    break;
 		}
+        tax = basePrice*0.08;
+        total = basePrice * 1.08; 
+		$("#subtotal").html(basePrice.toFixed(2));
+		$("#tax").html(tax.toFixed(2));
+		$("#total").html(total.toFixed(2));
+
 		toggle_renew();
 	});
 	$("input[type='radio']").click(function() {
