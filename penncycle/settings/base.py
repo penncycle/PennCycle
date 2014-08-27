@@ -92,7 +92,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'mobile',
-    'gunicorn',
     'south',
     'staff',
     'stats',
