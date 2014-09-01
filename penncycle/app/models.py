@@ -339,3 +339,12 @@ class Helmet(models.Model):
 
     def __unicode__(self):
         return "Helmet {}".format(self.number)
+
+class Carousel(models.Model): 
+	header = models.CharField(max_length=200)
+	description = models.CharField(max_length=200)
+	picture = models.ImageField(upload_to='img/carousel', blank=True, null=True)
+
+	def __unicode__(self): 
+		return self.header
+

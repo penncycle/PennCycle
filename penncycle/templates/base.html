@@ -44,9 +44,9 @@
     </div>
     <img class="bg-image hidden-phone" src="{{ STATIC_URL }}img/philly.jpg">
     <div class="container opaque">
-      <center>
-        <a href="/"><img class="centered" src="{{ STATIC_URL }}img/PennCycle-Logo-3-web-570.png" width="400px"></a>
-        <div class="navbar">
+      <div class="base-top">
+        <a href="/"><img class="left" src="{{ STATIC_URL }}img/PennCycle-Logo-3-web-570.png" width="400px"></a>
+        <div class="navbar base-navbar">
           <div class="navbar-inner">
             <ul class="nav1 nav">
               <li><a href="/">Home</a></li>
@@ -72,7 +72,7 @@
           {% endfor %}
         </div>
         {% endif %}
-      </center>
+      </div>
       <div class="row-fluid">
         {% block content %}
         {% endblock content %}

@@ -95,6 +95,19 @@ img {
   border: 0;
   -ms-interpolation-mode: bicubic;
 }
+.left { 
+	float: left;
+}
+.base-navbar { 
+	float: left;
+	margin: 25px 10px;
+}
+.base-top { 
+	padding: 20px ;
+	height: auto;
+	min-height: 40px;
+	margin-bottom: 50px;
+}
 #map_canvas img,
 .google-maps img {
   max-width: none;
@@ -5169,6 +5182,7 @@ a.badge:focus {
   background-color: #ccc;
   background-color: rgba(255, 255, 255, 0.25);
   border-radius: 5px;
+  border: 1px solid LightGray;
 }
 .carousel-indicators .active {
   background-color: #fff;

@@ -49,45 +49,99 @@
     background-color: hsla(200, 100%, 50%, .5);
   }
   #variable_plan { 
-    font-weight: 700;
   }
-
+  .carousel-holder { 
+	height: 500px;
+	width: auto;
+	margin: 0px 100px;
+	background-image: url('{{ STATIC_URL }}img/collegehall.jpg');
+	background-color: gray;
+	border-radius: 10px;
+	margin-bottom: 10px;
+  }
+  .carousel-img { 
+	  display: block;
+	  height: 500px;
+	  max-height: 500px;
+	  width: auto;
+	  margin-left: auto;
+	  margin-right: auto;
+  }
+  .carousel { 
+	  border-radius: 10px;
+  }
+  .carousel-holder .carousel-inner { 
+  }
+  .carousel-holder .carousel .item { 
+	  background:  rgba(238, 238, 238, 0.65); 
+  }
+  .carousel-caption { 
+	  text-align: center;
+	  color: white;
+	  border-bottom-right-radius: 10px;
+	  border-bottom-left-radius: 10px;
+  }
+  .carousel-control { 
+	  border: none;
+	  background: inherit;
+	  color: #808080;
+   }
+   .our-plans { 
+	   margin-left: 50px;
+	   font-weight: bold;
+   }
+   .row-fluid .span5 { 
+	   padding-right: 30px;
+   }
+   .selected-plan { 
+	   margin-left: 40px;
+   }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="row-fluid well">
-  <div style="width:auto; height:50px; text-align: center">
-    <h4>Hover your mouse over any of the stations to see which bikes are available there!</h4>
+  <div class="carousel-holder">
+	  <div id="index-carousel" class="carousel slide" data-ride="carousel">
+		  <ol class="carousel-indicators">
+			  <li data-target="#index-carousel" data-slide-to="0" class="active"></li>
+			  <li data-target="#index-carousel" data-slide-to="1"></li>
+			  <li data-target="#index-carousel" data-slide-to="2"></li>
+		  </ol>
+
+		  <div class="carousel-inner">
+			  <div data-slide-no="0" class="item active">
+				<img class="carousel-img" src="{{ STATIC_URL }}img/katie-sitting-reading.jpg">
+				<div class="carousel-caption">
+					<h3>Welcome to PennCycle!</h3>
+					<p>The University of Pennsylvania's premier campus-wide bike share</p>
+				</div>
+			  </div>
+			  <div data-slide-no="1" class="item">
+				<img class="carousel-img" src="{{ STATIC_URL }}img/screenshot.png">
+				<div class="carousel-caption">
+					<h3>PennCycle goes Mobile!</h3>
+					<p>Simply text "Check Out [number]" to 215-688-5468 once you've signed up to check out a bike.</p>
+				</div>
+			  </div>
+			  <div data-slide-no="2" class="item">
+				<img class="carousel-img" src="{{ STATIC_URL }}img/katie-smiling-riding-with-man-GONE.jpg">
+				<div class="carousel-caption">
+					<h3>Helmets and locks are included with all plans.</h3>
+				</div>
+			  </div>
+
+		  </div>
+		  <a class="left carousel-control" href="#index-carousel" data-slide="next">&#10094;</a>
+		  <a class="right carousel-control" href="#index-carousel" data-slide="next">&#10095;</a>
+
+	  </div>
   </div>
-  <div id="map" style="width:auto; height:380px; min-width: 150px"></div>
-  <br>
+ <br>
   <div class="row-fluid">
-    <div class="span3">
-      <img src="{{ STATIC_URL }}img/screenshot.png">
-    </div>
-    <div class="span9">
-      <div class="row-fluid">
-        <div class="span6">
-          <h1 class="text-center">PennCycle goes mobile!</h1>
-          <p>Text "Check Out&lt;number&gt;" to 215-688-5468 once you've <a href="/signup/">signed up</a> to check out a bike.</p>
-        </div>
-
-        <div class="span6 well" style="padding">
-          <h3 id="variable_plan">Basic Plan: ${{ basicPrice }}/month</h3>
-          <h4 id="variable_description">Unlimited 24-hour rides.</h4>
-          <form method="GET" action="/lookup/">
-            <input type="text" name="penncard" maxlength="8" placeholder="Enter your PennCard">
-            <input class="btn btn-primary" type="submit" value="Get Started &raquo;">
-            <div class="btn">
-              <a href="/signin/">Sign In</a>
-            </div>
-          </form>
-        </div>
-
-      </div>
-      <div class="row-fluid">
-        <h3 class="text-center">Our Plans</h3>
+     <div class="span6">
+     <div class="row-fluid">
+        <h3 class="our-plans">Our Plans:</h3>
         <div class="row-fluid">
           <div class="span3 offset1">
             <div class="circle" id="day_plan">
@@ -116,45 +170,72 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <hr>
+       <div class="row-fluid">
+        <div class="selected-plan" style="margin-top:40px; text-align:center">
+			<h3><strong>Selected Plan:</strong> <span id="variable_plan">Basic - ${{ basicPrice }}/month</span></h3>
+          <form method="GET" action="/lookup/">
+			<div>
+				<input class="btn btn-primary" type="submit" value="Get Started &raquo;">
+				<div class="btn">
+				  <a href="/signin/">Sign In</a>
+				</div>
+			</div>
+          </form>
+        </div>
 
-  <br>
-  <p class="text-center" style="margin-top:-1%">Helmets and locks are included with all plans. <a class="btn btn-primary offset1" href="/signup/" style="margin-top:0px">Sign Up &raquo;</a></p>
-  <hr>
+      </div>
+ 
+      </div>
+
+    </div>
+    <div class="span6" style="padding: 0 20px">
+		<div style="width:auto; height:50px;margin-top: 0px; margin-bottom: 10px">
+			<h3><strong>Our Stations:</strong></h3> 
+		</div>
+		<div id="map" style="width:auto; height:380px; min-width: 150px"></div>
+		<h4 style="text-align: center">Hover your mouse over a station to see which bikes are available there!</h4>
+    </div>
+
+  </div>
+  <hr style="margin-top:50px">
   <center>
     <img src="{{ STATIC_URL }}img/instructions.png">
   </center>
   <hr>
-  <center>
-    <img src='{{ STATIC_URL }}img/katie-sitting-reading.jpg' class="thumbnail">
-  </center>
   <p class="text-center">Happy Cycling!</p>
 </div>
 {% endblock %}
 
 {% block scripts %}
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
+  <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
+
   <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.0.1/src/markerwithlabel.js"></script>
   <script src="{{ STATIC_URL }}js/map.js"></script>
   <script>
+	$("#index-carousel").carousel({
+		pause: "hover",
+		interval: 4000,
+	});
+	$('#index-carousel').on( 'slide', function () {
+		var active  = (parseInt($('.carousel-inner .active').attr('data-slide-no')) + 1);
+		var total = $(".carousel-inner").children().length;
+		active >= total ? active = 0 : null;
+		$(".carousel-indicators li").removeClass('active');
+		$('.carousel-indicators [data-slide-to=' + active + ']').addClass('active');
+	});
+
     $(".circle").click(function() {
       $(".circle").not(this).removeClass("selected");
       $(this).addClass("selected");
       switch (this.id) {
         case "day_plan":
-        $("#variable_plan").hide().html("Day Plan: ${{ dayPrice }}/day").fadeIn('slow');
-        $("#variable_description").hide().html("A 24-hour bike checkout.").fadeIn('slow');
+		$("#variable_plan").hide().html("Day - ${{ dayPrice }}/day").fadeIn('slow');
         break;
         case "month_plan":
-          $("#variable_plan").hide().html("Basic Plan: ${{ basicPrice }}/month").fadeIn('slow');
-          $("#variable_description").hide().html("Unlimited 24-hour rides.").fadeIn('slow');
+		$("#variable_plan").hide().html("Basic - ${{ basicPrice }}/month").fadeIn('slow');
         break;
         case "unlimited_plan":
-          $("#variable_plan").hide().html("Unlimited Plan: ${{ unlimitedPrice }}/month").fadeIn('slow');
-          $("#variable_description").hide().html("Unlimited checkouts for however long you like.").fadeIn('slow')
+		$("#variable_plan").hide().html("Unlimited - ${{ unlimitedPrice }}/month").fadeIn('slow');
         break;
     }
   });
