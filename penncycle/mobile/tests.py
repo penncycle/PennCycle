@@ -338,7 +338,7 @@ class TwilioTest(TestCase):
     def test_closed_for_maintenance(self):
         body = "bikes"
         response = handle_sms(self.student3, body)
-        expected = "PennCycle will be closed for maintenance until October 8th.  You may not check out bikes until then. Thank you for your understanding."
+        expected = "PennCycle will be closed for maintenance until October 11th.  You may not check out bikes until then. Thank you for your understanding."
         print(response)
         self.assertTrue(expected in response)
         self.assertLess(len(response), 161)
