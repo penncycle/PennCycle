@@ -9,7 +9,7 @@ from penncycle.app.models import(
 from penncycle.util.lend import make_ride
 from management.commands.warn import get_late_rides, warn_message
 from views import(
-    handle_checkout, handle_checkin, handle_stations, handle_help, handle_bikes
+    handle_checkout, handle_checkin, handle_stations, handle_help, handle_bikes, handle_sms 
 )
 
 class TwilioTest(TestCase):
@@ -334,3 +334,13 @@ class TwilioTest(TestCase):
         self.assertTrue(expected1 in response)
         self.assertTrue(expected2 in response)
         self.assertLess(len(response), 161)
+
+    def test_closed_for_maintenance(self):
+        body = "bikes"
+        response = handle_sms(self.student3, body)
+        expected = "PennCycle will be closed for maintenance until October 8th.  You may not check out bikes until then. Thank you for your understanding."
+        print(response)
+        self.assertTrue(expected in response)
+        self.assertLess(len(response), 161)
+
+

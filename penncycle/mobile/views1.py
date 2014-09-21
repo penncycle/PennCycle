@@ -186,25 +186,18 @@ def handle_report(student, body):
     return "Thank you. We will take care of the issue as soon as we can. In the meantime, text 'bikes' for available bikes. Email messenger@penncycle.org with questions."
 
 def handle_sms(student, body):
-    message = "PennCycle will be closed for maintenance until October 11th.  You may not check out bikes until then. Thank you for your understanding."
     if any(command in body for command in ["rent", "checkout", "check out", "check-out"]):
-        # return handle_checkout(student, body)
-        return message
+        return handle_checkout(student, body)
     elif any(command in body for command in ["checkin", "return", "check in", "check-in"]):
-        # return handle_checkin(student, body)
-        return message
+        return handle_checkin(student, body)
     elif any(command in body for command in ["station", "stations", "location", "locations"]):
-        # return handle_stations()
-        return message
+        return handle_stations()
     elif any(command in body for command in ["bikes", "available"]):
-        # return handle_bikes()
-        return message
+        return handle_bikes()
     elif any(command in body for command in ["report"]):
-        # return handle_report(student, body)
-        return message
+        return handle_report(student, body)
     else:
-        # return handle_help(student, body)
-        return message
+        return handle_help(student, body)
 
 @twilio_view
 def sms(request):
@@ -219,5 +212,3 @@ def sms(request):
     body = request.POST.get("Body", "").lower()
     response = handle_sms(student, body)
     return reply(response)
-
-

@@ -32,7 +32,7 @@ urlpatterns = patterns(
     (r'^about/$', TemplateView.as_view(template_name="about.html")),
     (r'^locations/$', Locations.as_view()),
     (r'^bikes/$', Bikes.as_view()),
-    (r'^welcome/$', welcome),
+    (r'^welcome/$', Index.as_view()),
     (r'^update/$', StudentUpdate.as_view()),
     (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
     (r'^safety-overview/$', TemplateView.as_view(template_name="safety_overview.html")),
