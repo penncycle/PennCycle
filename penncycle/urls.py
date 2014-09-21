@@ -24,9 +24,9 @@ urlpatterns = patterns(
 
     # Normal pages
     (r'^$', Index.as_view()),
-    (r'^signup/$', Signup.as_view()),
-    (r'^signin/$', login, {"template_name": "signin.html"}),
-    (r'^login/$', login, {"template_name": "signin.html"}),
+    (r'^signup/$', Index.as_view()),  # TEMPORARILY REDIRECTING
+    (r'^signin/$', Index.as_view()),    # TEMPORARILY REDIRECTING
+    (r'^login/$', login, Index.as_view()),  # TEMPORARILY REDIRECTING
     (r'^faq/$', TemplateView.as_view(template_name="faq.html")),
     (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
     (r'^about/$', TemplateView.as_view(template_name="about.html")),

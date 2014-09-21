@@ -4,3 +4,6 @@
 *.dump
 .DS_Store
 _build
+*.swp
+*.swo
+
