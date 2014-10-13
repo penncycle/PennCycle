@@ -24,15 +24,15 @@ urlpatterns = patterns(
 
     # Normal pages
     (r'^$', Index.as_view()),
-    (r'^signup/$', Index.as_view()),  # TEMPORARILY REDIRECTING
-    (r'^signin/$', Index.as_view()),    # TEMPORARILY REDIRECTING
-    (r'^login/$', Index.as_view()),  # TEMPORARILY REDIRECTING
+    (r'^signup/$', Signup.as_view()),  
+    (r'^signin/$', login, {"template_name": "signin.html"}),
+    (r'^login/$', login, {"template_name": "signin.html"}),
     (r'^faq/$', TemplateView.as_view(template_name="faq.html")),
     (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
     (r'^about/$', TemplateView.as_view(template_name="about.html")),
     (r'^locations/$', Locations.as_view()),
     (r'^bikes/$', Bikes.as_view()),
-    (r'^welcome/$', Index.as_view()),
+    (r'^welcome/$', welcome),
     (r'^update/$', StudentUpdate.as_view()),
     (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
     (r'^safety-overview/$', TemplateView.as_view(template_name="safety_overview.html")),

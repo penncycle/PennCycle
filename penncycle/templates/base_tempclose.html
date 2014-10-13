@@ -44,9 +44,14 @@
     </div>
     <img class="bg-image hidden-phone" src="{{ STATIC_URL }}img/philly.jpg">
     <div class="container opaque">
-      <center>
-        <a href="/"><img class="centered" src="{{ STATIC_URL }}img/PennCycle-Logo-3-web-570.png" width="400px"></a>
-        <div class="navbar">
+      <div class="base-top">
+        <div style="text-align:center">
+            <h2>PennCycle will be closed for maintenance until October 11th.</h2>
+            <h5>You won't be able to sign up for plans or check out bikes until then. We apologize for any inconveniences, and look forward to serving you when we reopen.</h5>
+            <h5>All plans will be extended an extra three weeks once we reopen.</h5>
+        </div>
+        <a href="/"><img class="left" src="{{ STATIC_URL }}img/PennCycle-Logo-3-web-570.png" width="400px"></a>
+        <div class="navbar base-navbar">
           <div class="navbar-inner">
             <ul class="nav1 nav">
               <li><a href="/">Home</a></li>
@@ -54,9 +59,10 @@
               <li><a href="/welcome/">My Account</a></li>
               <li><a href="/logout/">Log Out</a></li>
               {% else %}
-              <li><a href="/signup/">Sign Up</a></li>
-              <li><a href="/signin/">Sign In</a></li>
+              <li><a style="color:gray" href="/signup/">Sign Up</a></li> <!-- REDIRECTING TEMPORARILY -->
+              <li><a style="color:gray" href="/signin/">Sign In</a></li> <!-- REDIRECTING TEMPORARILY -->
               {% endif %}
+              <li><a href="/bikes/">Bikes</a></li>
               <li><a href="/locations/">Locations</a></li>
               <li><a href="/safety/">Safety</a></li>
               <li><a href="/faq/">FAQ</a></li>
@@ -64,7 +70,14 @@
             </ul>
           </div>
         </div>
-      </center>
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+          <h4 {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</h4>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
       <div class="row-fluid">
         {% block content %}
         {% endblock content %}
@@ -76,7 +89,7 @@
         </div>
       </div>
       <div class="row">
-        <p class="text-center">&copy; PennCycle 2013</p>
+        <p class="text-center">&copy; PennCycle 2014</p>
       </div>
     </div> <!-- /container -->
 
