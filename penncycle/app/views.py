@@ -69,7 +69,6 @@ def welcome(request):
         "unlimitedPrice" : unlimitedPrice
     }
     return render_to_response("welcome.html", RequestContext(request, context))
-    #return render_to_response("welcome_onlydayplan.html", RequestContext(request, context))
 
 
 class Index(TemplateView):
@@ -97,7 +96,7 @@ class Locations(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'stations': Station.objects.exclude(name="PSA")
+            'stations': Station.objects.filter(active="true")
         }
 
 
