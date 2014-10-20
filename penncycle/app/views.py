@@ -326,7 +326,12 @@ class Bikes(TemplateView):
 
     def get_context_data(self):
         context = super(Bikes, self).get_context_data()
-        context['bikes'] = Bike.objects.filter(status="available")
+        stations = Station.objects.filter(active=True)
+        bike_set = set();
+        for s in stations:
+            bike_set.update(set(s.bikes.filter(status="available"))) 
+            
+        context['bikes'] = bike_set
         return context
 
 
