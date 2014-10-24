@@ -34,7 +34,7 @@ class PaymentAdmin(admin.ModelAdmin):
     list_per_page = 500
     list_display = (
         'student', 'plan', 'amount', 'payment_type',
-        'satisfied', 'status', 'end_date'
+        'satisfied', 'status', 'end_date', 'payment_date'
     )
     search_fields = ('student__name', 'plan__name',)
     list_filter = ('plan', 'payment_type', 'satisfied')
