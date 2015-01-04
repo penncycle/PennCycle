@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from braces.views import LoginRequiredMixin
 
-from app.models import Bike, Student, Payment, Ride
+from app.models import Bike, Student, Payment, Ride, Station
 
 from util.util import email_razzi
 from util.lend import make_ride, checkin_ride
@@ -124,7 +124,7 @@ def checkout(request):
 @login_required_ajax
 def checkin(request):
     try:
-        station = request.user.groups.exclude(name='Associate')[0].name
+        station = Station.objects.get(name="PSA")
         student_id = request.POST.get("student_id")
         student = Student.objects.get(id=student_id)
         ride = student.ride_set.latest("checkout_time")
