@@ -168,31 +168,21 @@
 	{% endif %}
 	<h2 class="text-center">Choose A Plan</h2>
 	<div class="row-fluid">
-		<div class="span4">
-			<div class="circle text-center purchased" id="day_plan">
-				<span class="plan-name">Day</span>
-				<span class="price">${{ dayPrice }}/day</span>
+		<div class="span6">
+			<div class="circle text-center purchased" id="month_plan">
+				<span class="plan-name">Month</span>
+				<span class="price">${{ monthPrice }}/month</span>
 			</div>
 			<br>
-			<div>Good for one 24-hour checkout.</div>
+			<div>Unlimited 24-hour checkouts for a month.</div>
 		</div>
-		<div class="span4">
-			<div class="circle text-center" id="basic_plan">
-				<span class="plan-name">Basic</span>
-				<span class="price">${{ basicPrice }}/month</span>
+		<div class="span6">
+			<div class="circle text-center" id="semester_plan">
+				<span class="plan-name">Semester</span>
+				<span class="price">${{ semesterPrice }}/4 months</span>
 			</div>
 			<br>
-			<div>Unlimited 24-hour checkouts. $5 for each day the bike is checked in late.</div>
-		</div>
-		<div class="span4">
-			<div class="circle text-center purchased" id="unlimited_plan">
-				<span class="plan-name">Unlimited</span>
-				<span class="price">${{ unlimitedPrice }}/month</span>
-			</div>
-			<br>
-			<div>
-				<div>Keep any bike out for as long as you like.</div>
-			</div>
+			<div>Unlimited 24-hour checkouts for 4 months</div>
 		</div>
 	</div>
 	<br>
@@ -359,20 +349,15 @@
         var tax = 0;
         var total = 0;
 		switch (this.id) {
-			case "day_plan":
-                basePriceStr = "{{ dayPrice }}";
-			    $("#purchase_button").html("Purchase Day Plan");
-			    $("#plan_name").html("Day");
+			case "month_plan":
+                basePriceStr = "{{ monthPrice }}";
+			    $("#purchase_button").html("Purchase Month Plan");
+			    $("#plan_name").html("Month");
 			    break;
-			case "basic_plan":
-                basePriceStr = "{{ basicPrice }}";
-			    $("#purchase_button").html("Purchase Basic Plan");
-			    $("#plan_name").html("Basic");
-			    break;
-			case "unlimited_plan":
-                basePriceStr = "{{ unlimitedPrice }}";
-			    $("#purchase_button").html("Purchase Unlimited Plan");
-			    $("#plan_name").html("Unlimited");
+			case "semester_plan":
+                basePriceStr = "{{ semesterPrice }}";
+			    $("#purchase_button").html("Purchase Semester Plan");
+			    $("#plan_name").html("Semester");
 			    break;
 		}
         basePrice = parseInt(basePriceStr); 
@@ -382,8 +367,9 @@
 		$("#tax").html(tax.toFixed(2));
 		$("#total").html(total.toFixed(2));
 
-		toggle_renew();
+		//toggle_renew();
 	});
+
 	$("input[type='radio']").click(function() {
 		var desc = $(this).val();
 		var target = $("#" + desc + "_description");
@@ -397,9 +383,14 @@
 			return;
 		}
 		method = $("input[name=payment]:checked").val();
+/*		var data = {
+			"penncard": "{{ student.penncard }}"
+			"renew": false,
+			"plan": $(".selected")[0].id
+		};*/
 		var data = {
-			"penncard": "{{ student.penncard }}",
-			"renew": $("#renew").is(':checked'),
+			"penncard": "77459709"
+			"renew": false,
 			"plan": $(".selected")[0].id
 		};
 		if (method == "credit") {
@@ -420,7 +411,7 @@
 				}
 			});
 		} else {
-			$.ajax({
+			$.ajax({//credit or bursar
 				type: "POST",
 				url: "/" + method + "/",
 				data: data,

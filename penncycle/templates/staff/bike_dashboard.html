@@ -10,7 +10,7 @@
             <div class="row-fluid">
                 <h3>Check out to</h3>
                 <div class="chzn-container">
-                    <select id="chooser" data-placeholder="Select student..." style="width:250px;" class="chzn-select" tabindex="1">
+                    <select id="chooser" data-placeholder="Select from eligible students..." style="width:250px;" class="chzn-select" tabindex="1">
                         <option value=""></option>
                         {% for s in eligible %}
                             <option value="{{ s.name }}">{{ s.name }}</option>

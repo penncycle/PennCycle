@@ -24,7 +24,7 @@ class Emails(LoginRequiredMixin, TemplateView):
     template_name = "staff/emails.html"
 
     def get_context_data(self):
-        four_months_ago = timezone.now() + timezone.timedelta(days=-120)
+        four_months_ago = timezone.localtime(timezone.now()) + timezone.timedelta(days=-120)
         context = super(Emails, self).get_context_data()
         unlimited_plans = Payment.objects.filter(plan__name="Unlimited Plan", end_date__isnull=False, end_date__gte=four_months_ago)
         unlimited_emails = [p.student.email for p in unlimited_plans]

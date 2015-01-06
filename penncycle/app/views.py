@@ -17,9 +17,9 @@ from .models import Student, Station, Bike, Payment, Plan, Info
 from util.util import email_razzi, welcome_email, payment_email, send_welcome_text
 from .forms import SignupForm, UpdateForm
 
-dayPrice = Plan.objects.get(name='Day Plan').cost
-basicPrice = Plan.objects.get(name='Basic Plan').cost
-unlimitedPrice = Plan.objects.get(name='Unlimited Plan').cost
+#global variables
+monthPrice = Plan.objects.get(name='Month Plan').cost
+semesterPrice = Plan.objects.get(name='Semester Plan').cost
 
 def lookup(request):
     penncard = request.GET.get("penncard")
@@ -62,11 +62,11 @@ def welcome(request):
         student = Student.objects.get(penncard=penncard)
     except Student.DoesNotExist:
         return HttpResponseRedirect("/signin/")
+    
     context = {
         "student": student, 
-        "dayPrice" : dayPrice, 
-        "basicPrice" : basicPrice,
-        "unlimitedPrice" : unlimitedPrice
+        "monthPrice": monthPrice, 
+        "semesterPrice": semesterPrice 
     }
     return render_to_response("welcome.html", RequestContext(request, context))
 
@@ -84,9 +84,8 @@ class Index(TemplateView):
                 "latitude": bike.location.latitude,
                 "longitude": bike.location.longitude
             } for bike in Bike.objects.all()],
-            "dayPrice" : dayPrice, 
-            "basicPrice" : basicPrice,
-            "unlimitedPrice" : unlimitedPrice
+            "monthPrice": monthPrice, 
+            "semesterPrice": semesterPrice
         }
         return context
 
@@ -189,21 +188,16 @@ def verify_waiver(request):
 def bursar(request):
     data = request.POST
     student = Student.objects.get(penncard=data.get("penncard"))
-    plan_element_id = data.get("plan")
-    plan = plan_element_id.replace("_", " ").title()
-    plan = Plan.objects.get(name=plan)
-    renew = data.get("renew")
-    if renew == "true":
-        renew = True
-    else:
-        renew = False
+   plan_element_id = data.get("plan")
+   plan = plan_element_id.replace("_", " ").title()
+   plan = Plan.objects.get(name=plan)
     payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
         satisfied=True,
         payment_type="bursar",
-        renew=renew,
+        renew=False,
         payment_date=timezone.datetime.now()
     )
     payment.save()
