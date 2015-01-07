@@ -143,10 +143,10 @@ class Student(models.Model):
 
     @property
     def paid_now(self):
-        return bool(self.current_payments)
+        return bool(self.current_payment)
 
     @property
-    def current_payments(self):
+    def current_payment(self):
         today = datetime.date.today()
         payments = self.payments.filter(satisfied=True).filter(
             Q(
@@ -155,11 +155,16 @@ class Student(models.Model):
                 end_date__isnull=True
             )
         )
-        return payments
+       #new payment structure in Jan 2015, so all previous payments are void 
+        payments = payments.filter(payment_date__gte=datetime.date(2015, 1, 1))
+        try:
+            return payments[0]
+        except IndexError:
+            return None
 
     @property
     def can_ride(self):
-        return bool(self.waiver_signed and self.current_payments.filter(status='available'))
+        return bool(self.current_payment)
 
     def __unicode__(self):
         return u'%s %s' % (self.name, self.penncard)
@@ -190,7 +195,7 @@ class Student(models.Model):
             "can_ride": self.can_ride,
             "ride_history": [r.serialize for r in self.ride_history],
             "current_ride": current_ride,
-            "current_payments": [p.serialize for p in self.current_payments]
+            "current_payment": self.current_payment.serialize
         }
 
 class Station(models.Model):

@@ -1,5 +1,5 @@
 import json
-
+import datetime
 from django.core.mail import send_mail
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -20,6 +20,7 @@ from .forms import SignupForm, UpdateForm
 #global variables
 monthPrice = Plan.objects.get(name='Month Plan').cost
 semesterPrice = Plan.objects.get(name='Semester Plan').cost
+yearPrice = Plan.objects.get(name='Year Plan').cost
 
 def lookup(request):
     penncard = request.GET.get("penncard")
@@ -65,8 +66,11 @@ def welcome(request):
     
     context = {
         "student": student, 
+        "current_payment": student.current_payment,
+        "can_ride": student.can_ride,
         "monthPrice": monthPrice, 
-        "semesterPrice": semesterPrice 
+        "semesterPrice": semesterPrice,
+        "yearPrice": yearPrice
     }
     return render_to_response("welcome.html", RequestContext(request, context))
 
@@ -186,19 +190,25 @@ def verify_waiver(request):
 
 @require_POST
 def bursar(request):
-   data = request.POST
-   student = Student.objects.get(penncard=data.get("penncard"))
-   plan_element_id = data.get("plan")
-   plan = plan_element_id.replace("_", " ").title()
-   plan = Plan.objects.get(name=plan)
-   renew = data.get("renew")
-   payment = Payment(
+    data = request.POST
+    student = Student.objects.get(penncard=data.get("penncard"))
+    plan_element_id = data.get("plan")
+    plan = plan_element_id.replace("_", " ").title()
+    plan = Plan.objects.get(name=plan)
+    renew = data.get("renew")
+    end_date = None
+    if (plan.name == "Semester Plan"):
+        end_date = datetime.date(2015, 5, 10)
+    elif (plan.name == "Year Plan"):
+        end_date = datetime.date(2015, 12, 18)
+    payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
         satisfied=True,
         payment_type="bursar",
         renew=renew,
+        end_date=end_date,
         payment_date=timezone.datetime.now()
     )
     payment.save()

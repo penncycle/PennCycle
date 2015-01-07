@@ -100,133 +100,94 @@
 
 {% block content %}
 <div class="well">
-	<div class="row-fluid">
-		<div class="span7">
-			{% if student.payments.all %}
-			<div class="payments">
-				<h3 class="text-center">Your PennCycle Plans</h3>
-				<p id="payment_message"></p>
-				{% for payment in student.payments.all %}
-				<div class="row-fluid" id="{{ payment.id }}">
-					{% if not now > payment.end_date %}
-					<span class="span4
-					{% if payment.satisfied %}
-					text-success
-					{% endif %}">{{ payment.plan.name }}
-					&nbsp;
-					<i class="icon-remove text-error delete" title="Click here to permanently delete"></i></span>
-					{% else %}
-					<span class="span4">(expired) {{ payment.plan.name }}</span>
-					{% endif %}
-				<span>Payment completed:</span>
-				{% if payment.satisfied %}
-				<span class="text-success" title="Paid on {{ payment.payment_date }}">
-					<i class="icon-ok-circle"></i>
-				</span>
-				{% else %}
-					{% if payment.payment_type == "credit" %}
-					<span amount="{{ payment.amount }}" class="text-error pay_by_credit" title="Click here to make a credit card payment.">
-						<i class="icon-circle-blank"></i>
-					</span>
-					{% else %}
-					<span class="text-error" title="Go to PSA to pay for this plan.">
-						<i class="icon-circle-blank"></i>
-					</span>
-					{% endif %}
-				{% endif %}
-				<br>
-				{% if payment.plan.name != "Day Plan" %}
-				{% if payment.renew %}
-				<span>Will renew
-					{% if not payment.end_date %}
-					30 days after first used.
-					{% else %}
-					on {{ payment.end_date }}.
-					{% endif %}
-				</span>
-				<span class="cancel_payment disable" title="Click here to disable automatic renewal.">
-					<i class="icon-remove-sign"></i>
-				</span>
-				{% else %}
-				<span>Will expire
-					{% if payment.end_date %}
-					on {{ payment.end_date }}.
-					{% elif "Day" in payment.name %}
-					24 hours after it is used.
-					{% else %}
-					30 days after first used.
-					{% endif %}
-					<i class="icon-refresh renew" title="Click here to enable renewal of the plan by bursar when it expires."></i>
-				</span>
-				{% endif %}
-			</span>
-			{% endif %}
-		</div>
-		<br>
-		{% endfor %}
-	</div>
-	{% endif %}
-	<h2 class="text-center">Choose A Plan</h2>
-	<div class="row-fluid">
-		<div class="span6">
-			<div class="circle text-center purchased" id="month_plan">
-				<span class="plan-name">Month</span>
-				<span class="price">${{ monthPrice }}/month</span>
-			</div>
-			<br>
-			<div>Unlimited 24-hour checkouts for a month.</div>
-		</div>
-		<div class="span6">
-			<div class="circle text-center" id="semester_plan">
-				<span class="plan-name">Semester</span>
-				<span class="price">${{ semesterPrice }}/4 months</span>
-			</div>
-			<br>
-			<div>Unlimited 24-hour checkouts for 4 months</div>
-		</div>
-	</div>
-	<br>
-	<p class="text-center">Helmet and lock rentals are included with all plans.</p>
-	<hr>
-	<div id="payment_info">
-		<form id="payment_methods" class="row-fluid text-center">
-			Pay By:
-			<input type="radio" name="payment" value="bursar" checked>Bursar
-		<!--	<input type="radio" name="payment" value="credit">Credit -->
-			<input type="radio" name="payment" value="cash">Cash
-		</form>
-		<hr>
-		<div class="descriptions">
-			<p id="bursar_description">Bursar is a payment option provided by Student Financial Services. Bursar charges will be added to your next Penn bill, but you can start biking immediately.</p>
-			<p id="credit_description" class="hidden">Credit card purchases are handled on an external website. Please allow a few hours for your payment to be processed.</p>
-			<p id="cash_description" class="hidden">To pay by cash, come to <a href="/about#qc" target="blank">Quaker Corner</a> and pay at the front counter.<br><br>
-			</p>
-		</div>
-		<div class="row-fluid text-center">
-			<div class="span4 offset1">
-				<p class="text-right"><span id="plan_name"></span> Plan: $<span id="subtotal">---</span></p>
-				<p class="text-right">Tax: $<span id="tax">---</span></p>
-				<h4 class="text-right">Total: $<span id="total">---</span></h4>
-			</div>
-			<div class="span5 offset2">
-				<button class="btn btn-primary disabled" id="purchase_button">
-					Choose a plan
-				</button>
-				<br><br>
-				<p id="renew-select" style="display:none">
-					<input type="checkbox" id="renew"> Automatically Renew
-				</p>
-			</div>
-		</div>
-	</div>
-	{% if not student.waiver_signed %}
-	<h4>You must sign the following waiver before you are eligible to ride.</h4>
-	<div class='waiver'>
-        <button id="display_waiver">Read and Sign Waiver</button>
-       	
-    </div> 
-	{% endif %}
+    <div class="row-fluid">
+    <span class="span12">
+	    <div class="welcome">
+		    <h4>Welcome, {{ student.name }}! <a href="/update/">Manage account info</a></h4>
+            {% if student.can_ride %}
+			    <div class="payments">
+				    <h3 class="text-center">Your PennCycle Plan</h3>
+				    <p id="payment_message"></p>
+                    <h4>{{ current_payment.plan.name }}</h4>
+                    <p>Expires         
+                    {% if current_payment.end_date %}
+                        on {{ current_payment.end_date }}
+                    {% else %}
+                        {% if current_payment.plan.name == "Month Plan" %}
+                        30 days after first ride
+                        {% elif current_payment.plan.name == "Semester Plan" %}
+                        at the end of the semester
+                        {% endif %}
+                    {% endif %}
+            {% else %}
+                <h2 class="text-center">Choose A Plan</h2>
+                <div class="row-fluid">
+                    <div class="span4">
+                        <div class="circle text-center purchased" id="month_plan">
+                            <span class="plan-name">Month</span>
+                            <span class="price">${{ monthPrice }}/month</span>
+                        </div>
+                        <br>
+                        <div>Unlimited 24-hour checkouts for a month.</div>
+                    </div>
+                    <div class="span4">
+                        <div class="circle text-center" id="semester_plan">
+                            <span class="plan-name">Semester</span>
+                            <span class="price">${{ semesterPrice }}</span>
+                        </div>
+                        <br>
+                        <div>Unlimited 24-hour checkouts until the end of the semester</div>
+                    </div>
+                    <div class="span4">
+                        <div class="circle text-center" id="year_plan">
+                            <span class="plan-name">Year</span>
+                            <span class="price">${{ yearPrice }}</span>
+                        </div>
+                        <br>
+                        <div>Unlimited 24-hour checkouts until the end of the year</div>
+                    </div>
+                </div>
+                <br>
+                <p class="text-center">Helmet and lock rentals are included with all plans.</p>
+                <hr>
+                <div id="payment_info">
+                    <form id="payment_methods" class="row-fluid text-center">
+                        Pay By:
+                        <input type="radio" name="payment" value="bursar" checked>Bursar
+                    <!--	<input type="radio" name="payment" value="credit">Credit -->
+                        <input type="radio" name="payment" value="cash">Cash
+                    </form>
+                    <hr>
+                    <div class="descriptions">
+                        <p id="bursar_description">Bursar is a payment option provided by Student Financial Services. Bursar charges will be added to your next Penn bill, but you can start biking immediately.</p>
+                        <p id="credit_description" class="hidden">Credit card purchases are handled on an external website. Please allow a few hours for your payment to be processed.</p>
+                        <p id="cash_description" class="hidden">To pay by cash, come to <a href="/about#qc" target="blank">Quaker Corner</a> and pay at the front counter.<br><br>
+                        </p>
+                    </div>
+                    <div class="row-fluid text-center">
+                        <div class="span4 offset1">
+                            <p class="text-right"><span id="plan_name"></span> Plan: $<span id="subtotal">---</span></p>
+                            <p class="text-right">Tax: $<span id="tax">---</span></p>
+                            <h4 class="text-right">Total: $<span id="total">---</span></h4>
+                        </div>
+                        <div class="span5 offset2">
+                            <button class="btn btn-primary disabled" id="purchase_button">
+                                Choose a plan
+                            </button>
+                            <br><br>
+                            <p id="renew-select" style="display:none">
+                                <input type="checkbox" id="renew"> Automatically Renew
+                            </p>
+                        </div>
+                    </div>
+                </div>
+        {% endif %}
+
+        </div>
+        </span>
+    </div>
 </div>
+<br>
 <div class="span5">
 	<div class="welcome">
 		<h4>Welcome, {{ student.name }}! <a href="/update/">Manage account info</a></h4>
@@ -358,6 +319,11 @@
                 basePriceStr = "{{ semesterPrice }}";
 			    $("#purchase_button").html("Purchase Semester Plan");
 			    $("#plan_name").html("Semester");
+			    break;
+            case "year_plan":
+                basePriceStr = "{{ yearPrice }}";
+			    $("#purchase_button").html("Purchase Year Plan");
+			    $("#plan_name").html("Year");
 			    break;
 		}
         basePrice = parseInt(basePriceStr); 
