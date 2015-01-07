@@ -383,13 +383,8 @@
 			return;
 		}
 		method = $("input[name=payment]:checked").val();
-/*		var data = {
-			"penncard": "{{ student.penncard }}"
-			"renew": false,
-			"plan": $(".selected")[0].id
-		};*/
 		var data = {
-			"penncard": "77459709"
+			"penncard": "{{ student.penncard }}",
 			"renew": false,
 			"plan": $(".selected")[0].id
 		};

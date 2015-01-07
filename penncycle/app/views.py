@@ -186,18 +186,19 @@ def verify_waiver(request):
 
 @require_POST
 def bursar(request):
-    data = request.POST
-    student = Student.objects.get(penncard=data.get("penncard"))
+   data = request.POST
+   student = Student.objects.get(penncard=data.get("penncard"))
    plan_element_id = data.get("plan")
    plan = plan_element_id.replace("_", " ").title()
    plan = Plan.objects.get(name=plan)
-    payment = Payment(
+   renew = data.get("renew")
+   payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
         satisfied=True,
         payment_type="bursar",
-        renew=False,
+        renew=renew,
         payment_date=timezone.datetime.now()
     )
     payment.save()
