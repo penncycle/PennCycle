@@ -101,7 +101,7 @@
 {% block content %}
 <div class="well">
     <div class="row-fluid">
-    <span class="span12">
+    <div class="span7">
 	    <div class="welcome">
 		    <h4>Welcome, {{ student.name }}! <a href="/update/">Manage account info</a></h4>
             {% if student.can_ride %}
@@ -119,6 +119,7 @@
                         at the end of the semester
                         {% endif %}
                     {% endif %}
+                </div>
             {% else %}
                 <h2 class="text-center">Choose A Plan</h2>
                 <div class="row-fluid">
@@ -128,7 +129,7 @@
                             <span class="price">${{ monthPrice }}/month</span>
                         </div>
                         <br>
-                        <div>Unlimited 24-hour checkouts for a month.</div>
+                        <div>Unlimited 24-hour checkouts for a month. Expires one month after your first ride.</div>
                     </div>
                     <div class="span4">
                         <div class="circle text-center" id="semester_plan">
@@ -136,7 +137,7 @@
                             <span class="price">${{ semesterPrice }}</span>
                         </div>
                         <br>
-                        <div>Unlimited 24-hour checkouts until the end of the semester</div>
+                        <div>Unlimited 24-hour checkouts until the end of the semester.</div>
                     </div>
                     <div class="span4">
                         <div class="circle text-center" id="year_plan">
@@ -144,7 +145,7 @@
                             <span class="price">${{ yearPrice }}</span>
                         </div>
                         <br>
-                        <div>Unlimited 24-hour checkouts until the end of the year</div>
+                        <div>Unlimited 24-hour checkouts until the end of the year.</div>
                     </div>
                 </div>
                 <br>
@@ -181,43 +182,19 @@
                         </div>
                     </div>
                 </div>
-        {% endif %}
+        	{% endif %}
+		</div>
+    </div>
 
+    <div class="span5">
+        <div class="text-center">
+            <img src="{{ STATIC_URL}}img/helmet.png" class="text-center">
         </div>
-        </span>
+        <p> You must have a helmet to ride PennCycle. If you need one, you can borrow or buy a helmet from <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a>. Read more about safety <a href="/safety">here</a>.</p>
+    </div>
     </div>
 </div>
 <br>
-<div class="span5">
-	<div class="welcome">
-		<h4>Welcome, {{ student.name }}! <a href="/update/">Manage account info</a></h4>
-	</div>
-	<div class="checklist">
-		<h2 class="text-center">Signup Checklist</h2>
-		<h3>Signed up: <i class="icon-ok-circle pull-right"></i></h3>
-		<h3>
-			Waiver signed:
-			{% if student.waiver_signed %}
-			<i class="icon-ok-circle pull-right"></i>
-			{% else %}
-			<i class="icon-circle-blank pull-right"></i>
-			{% endif %}
-		</h3>
-		<h3>
-			Bought plan:
-			{% if student.paid_now %}
-			<i class="icon-ok-circle pull-right"></i>
-			{% else %}
-			<i class="icon-circle-blank pull-right"></i>
-			{% endif %}
-		</h3>
-	</div>
-	<br>
-	<div class="text-center">
-		<img src="{{ STATIC_URL}}img/helmet.png" class="text-center">
-	</div>
-	<p> You must have a helmet to ride PennCycle. If you need one, you can borrow or buy a helmet from <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a>. Read more about safety <a href="/safety">here</a>.</p>
-</div>
 <div class="row-fluid text-center">Have any questions? Email <a href="mailto:messenger@penncycle.org">messenger@penncycle.org</a>
 </div>
 <form name="vpul_form" id="vpul_form" method="post" target="vpul_iframe" action="https://secure.www.upenn.edu/vpul/psa/bike/index.php" style="display:none;">
@@ -312,17 +289,17 @@
 		switch (this.id) {
 			case "month_plan":
                 basePriceStr = "{{ monthPrice }}";
-			    $("#purchase_button").html("Purchase Month Plan");
+			    $("#purchase_button").html("Sign Waiver and Purchase Month Plan");
 			    $("#plan_name").html("Month");
 			    break;
 			case "semester_plan":
                 basePriceStr = "{{ semesterPrice }}";
-			    $("#purchase_button").html("Purchase Semester Plan");
+			    $("#purchase_button").html("Sign Waiver and Purchase Semester Plan");
 			    $("#plan_name").html("Semester");
 			    break;
             case "year_plan":
                 basePriceStr = "{{ yearPrice }}";
-			    $("#purchase_button").html("Purchase Year Plan");
+			    $("#purchase_button").html("Sign Waiver and Purchase Year Plan");
 			    $("#plan_name").html("Year");
 			    break;
 		}
@@ -344,8 +321,8 @@
 		toggle_renew();
 	});
 
-	$("#purchase_button").click(function() {
-		if ($(this).hasClass("disabled")) {
+	function purchase() {
+		if ($("#purchase_button").hasClass("disabled")) {
 			return;
 		}
 		method = $("input[name=payment]:checked").val();
@@ -385,7 +362,7 @@
 				async: false
 			});
 		}
-	});
+	};
 
 	$modal = (function() {
         var
@@ -455,11 +432,11 @@
         return method;
 
     }());
-    $accept_waiver_button = ('<button id="accept" class="btn btn-primary">I Accept this Waiver &#187;</button><span id="waiver-result"></span><label>Clicking this button counts as your digital signature and is legally binding</label>');
+    $accept_waiver_button = ('<button id="accept" class="btn btn-primary">Accept Waiver and Purchase Plan&#187;</button><span id="waiver-result"></span><label>Clicking this button counts as your digital signature and is legally binding</label>');
  
      
     /*waiver modal window*/
-    $("#display_waiver").click(function() {
+    $("#purchase_button").click(function() {
         var $ht = 0.75*$(window).height();
         var $wt = 0.75*$(window).width();
         var $text = $("<h4><i>Please sign at the bottom of the waiver</i></h4>");
@@ -479,7 +456,7 @@
 				    } else {
 					    $("#waiver-result").html("There was a problem with our server. Reloading data...");
 				    }
-				    location.reload();
+				    purchase();
 			        });
 		    	});
 	        });
