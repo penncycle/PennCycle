@@ -89,7 +89,8 @@ class Index(TemplateView):
                 "longitude": bike.location.longitude
             } for bike in Bike.objects.all()],
             "monthPrice": monthPrice, 
-            "semesterPrice": semesterPrice
+            "semesterPrice": semesterPrice,
+            "yearPrice": yearPrice
         }
         return context
 

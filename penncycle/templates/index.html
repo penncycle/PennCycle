@@ -118,13 +118,6 @@
 				</div>
 			  </div>
 			  <div data-slide-no="1" class="item">
-				<img class="carousel-img" src="{{ STATIC_URL }}img/screenshot.png">
-				<div class="carousel-caption">
-					<h3>PennCycle goes Mobile!</h3>
-					<p>Simply text "Check Out [number]" to 215-688-5468 once you've signed up to check out a bike.</p>
-				</div>
-			  </div>
-			  <div data-slide-no="2" class="item">
 				<img class="carousel-img" src="{{ STATIC_URL }}img/katie-smiling-riding-with-man-GONE.jpg">
 				<div class="carousel-caption">
 					<h3>Helmets and locks are included with all plans.</h3>
@@ -139,11 +132,13 @@
   </div>
  <br>
   <div class="row-fluid">
-     <div class="span6">
+    <h3><b>Checkout a Bike:</b></h3>
+    <p>We now handle all bike check-ins and check-outs personally at the <a href="/about/">Quaker Corner</a>. Sign up for a membership online, choose a plan,  and then visit our office to checkout a bike!</p>
+     <div class="span12">
      <div class="row-fluid">
         <h3 class="our-plans">Our Plans:</h3>
         <div class="row-fluid">
-          <div class="span5 offset1">
+          <div class="span3 offset1">
             <div class="circle" id="month_plan">
               <span class="plan-name">Month Plan</span>
               <span class="price">${{ monthPrice }}/month</span>
@@ -151,13 +146,21 @@
             <br>
               <div>Unlimited 24-hour checkouts for a month.</div>
           </div>
-          <div class="span5 offset1">
+          <div class="span3 offset1">
             <div class="circle selected" id="semester_plan">
               <span class="plan-name">Semester Plan</span>
-              <span class="price">${{ semesterPrice }}/4 months</span>
+              <span class="price">${{ semesterPrice }}</span>
             </div>
             <br>
-            <div>Unlimited 24-hour checkouts for four months.</div>
+            <div>Unlimited 24-hour checkouts for the whole semester.</div>
+          </div>
+          <div class="span3 offset1">
+            <div class="circle selected" id="year_plan">
+              <span class="plan-name">Year Plan</span>
+              <span class="price">${{ yearPrice }}</span>
+            </div>
+            <br>
+            <div>Unlimited 24-hour checkouts for the whole year.</div>
           </div>
         </div>
        <div class="row-fluid">
@@ -178,19 +181,8 @@
       </div>
 
     </div>
-    <div class="span6" style="padding: 0 20px">
-		<div style="width:auto; height:50px;margin-top: 0px; margin-bottom: 10px">
-			<h3><strong>Our Stations:</strong></h3> 
-		</div>
-		<div id="map" style="width:auto; height:380px; min-width: 150px"></div>
-		<h4 style="text-align: center">Hover your mouse over a station to see which bikes are available there!</h4>
-    </div>
 
   </div>
-  <hr style="margin-top:50px">
-  <center>
-    <img src="{{ STATIC_URL }}img/instructions.png">
-  </center>
   <hr>
   <p class="text-center">Happy Cycling!</p>
 </div>
@@ -222,7 +214,10 @@
 		$("#variable_plan").hide().html("Month - ${{ monthPrice }}/month").fadeIn('slow');
         break;
         case "semester_plan":
-		$("#variable_plan").hide().html("Semester - ${{ semesterPrice }}/4 months").fadeIn('slow');
+		$("#variable_plan").hide().html("Semester - ${{ semesterPrice }}").fadeIn('slow');
+        break;
+        case "year_plan":
+		$("#variable_plan").hide().html("Year - ${{ yearPrice }}").fadeIn('slow');
         break;
     }
   });
