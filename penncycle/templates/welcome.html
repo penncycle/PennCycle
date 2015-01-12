@@ -101,7 +101,7 @@
 {% block content %}
 <div class="well">
     <div class="row-fluid">
-    <div class="span7">
+    <div class="span9">
 	    <div class="welcome">
 		    <h4>Welcome, {{ student.name }}! <a href="/update/">Manage account info</a></h4>
             {% if student.can_ride %}
@@ -156,7 +156,6 @@
                         Pay By:
                         <input type="radio" name="payment" value="bursar" checked>Bursar
                     <!--	<input type="radio" name="payment" value="credit">Credit -->
-                        <input type="radio" name="payment" value="cash">Cash
                     </form>
                     <hr>
                     <div class="descriptions">
@@ -186,7 +185,7 @@
 		</div>
     </div>
 
-    <div class="span5">
+    <div class="span3">
         <div class="text-center">
             <img src="{{ STATIC_URL}}img/helmet.png" class="text-center">
         </div>
