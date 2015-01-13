@@ -48,7 +48,7 @@ class BikeDashboard(LoginRequiredMixin, TemplateView):
         context = super(BikeDashboard, self).get_context_data()
         user = self.request.user
         try:
-            station = user.groups.exclude(name='Associate')[0]
+            station = Station.objects.get(name="PSA")
             station_name = station.name
         except IndexError:
             station = None

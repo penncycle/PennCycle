@@ -24,7 +24,8 @@
                     {% for bike in row %}
                         <div class="bike span6" id="{{ bike.name }}">
                             <img src="{{ STATIC_URL }}img/bikes/{{ bike.manufacturer|lower }}.png" width="50%">
-                            <h3>{{ bike.name }}</h3>
+                            <h3>Bike: {{ bike.name }}</h3>
+                            <h3>Lock Combo: {{ bike.combo }}</h3>
                             <p>Last returned at {{ bike.location }} by {{ bike.rider }} on {{ bike.return_date }}</p>
                             <div class="btn btn-success checkout">
                                 Check out to <span class="name"></span>
@@ -42,7 +43,8 @@
                     {% for bike in row %}
                         <div class="bike span6">
                             <img src="{{ STATIC_URL }}img/bikes/{{ bike.manufacturer|lower }}.png" width="50%">
-                            <h3>{{ bike.name }}</h3>
+                            <h3>Bike: {{ bike.name }}</h3>
+                            <h3>Lock Combo: {{ bike.combo }}</h3>
                             <p>Checked out to {{ bike.rider }}</p>
                             <div class="btn btn-primary checkin" id="{{ bike.rider_id }}">Check in</div>
                         </div>
