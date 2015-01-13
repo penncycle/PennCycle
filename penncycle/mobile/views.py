@@ -201,6 +201,9 @@ def handle_sms(student, body):
 
 @twilio_view
 def sms(request):
+    response = 'We now only handle check-ins and check-outs in person from the PSA store. Please visit penncycle.org for more info'
+    return reply(response)
+'''
     fromNumber = request.POST.get("From")
     number = fromNumber[2:]
     lookup = number[0:3]+"-"+number[3:6]+"-"+number[6:]
@@ -212,5 +215,5 @@ def sms(request):
     body = request.POST.get("Body", "").lower()
     response = handle_sms(student, body)
     return reply(response)
-
+'''
 
