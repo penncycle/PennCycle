@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from braces.views import LoginRequiredMixin
 
-from app.models import Bike, Student, Payment, Ride, Station
+from app.models import Bike, Student, Payment, Ride, Station, Plan
 
 from util.util import email_razzi
 from util.lend import make_ride, checkin_ride
@@ -18,6 +18,11 @@ class Index(LoginRequiredMixin, TemplateView):
         context = super(Index, self).get_context_data()
         context['bikes'] = Bike.objects.all()
         context['available_bikes'] = Bike.objects.filter(status="available")
+        context['no_plans'] = [s for s in Student.objects.all() if not s.can_ride]
+        context['dayPrice'] = Plan.objects.get(name='Day Plan').cost
+        context['monthPrice'] = Plan.objects.get(name='Month Plan').cost
+        context['semesterPrice'] = Plan.objects.get(name='Semester Plan').cost
+        context['yearPrice'] = Plan.objects.get(name='Year Plan').cost
         return context
 
 class Emails(LoginRequiredMixin, TemplateView):

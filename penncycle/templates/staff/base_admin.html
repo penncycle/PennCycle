@@ -33,6 +33,35 @@
 				</div>
 			</div>
 		</div>
+        <br>
+        <div class="well">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h3>New Payment:</h3>
+                        <h4>Select student:</h4>
+                            <p><i>Students who haven't signed up for an account, or who already have an existing plan will not appear.</i></p>
+                        <div class="chzn-container">
+                            <select id="choose-penncard" data-placeholder="Enter PennCard#" style="width:250px;" class="chzn-select" tabindex="1">
+                                <option value=""></option>
+                            {% for s in no_plans %}
+                                <option value="{{ s.penncard }}">{{ s.penncard }} {{ s.name }}</option>
+                            {% endfor %}
+                            </select>
+                        <div>
+                        <br>
+                        <form id="choose-plan" class="row-fluid text-center">
+                            <h4>Choose Plan:</h4>
+                            <p><input type="radio" name="planType" value="Day">Day ${{ dayPrice }}</p>
+                            <p><input type="radio" name="planType" value="Month" checked>Month ${{ monthPrice }}</p>
+                            <p><input type="radio" name="planType" value="Semester">Semester ${{ semesterPrice }}</p>
+                            <p><input type="radio" name="planType" value="Year">Year ${{ yearPrice }}</p>
+                        </form>
+                        <button class="btn btn-primary" id="record-payment">Record Payment</button>         
+                        <p>test: <span class="test"></span></p>
+                        <br>
+                </div>
+            </div>
+        <div> 
 
 		{% block content %}
 		{% endblock %}
@@ -42,7 +71,23 @@
 		<script src="{{ STATIC_URL }}js/chosen.jquery.js"></script>
 		<!-- more scripts -->
 		{% block scripts %}
+        <script>
+            $(".chzn-select").chosen({allow_single_deselect: true});
+           // $("#chooser").hide();
+            var student = $("a.chzn-single span").text();
+
+            $("#record-payment").click(function() {
+                var data = {
+                    "penncard": $("#choose-penncard option:selected").text().substr(0, 8),
+                    "renew": false,
+                    "plan": $("input[name=planType]:checked").val() + " Plan"
+                };
+                
+                $(".test").html(data.plan);
+            });
+        </script>
 		{% endblock scripts %}
+        
 	</body>
 </html>
 

@@ -122,7 +122,7 @@
                     <p>You can purchase a new plan once your current one expires.</p>
                 </div>
             {% else %}
-                <h2 class="text-center">Choose A Plan</h2>
+                <h2 class="text-center">Our Plans</h2>
                 <div class="row-fluid">
                     <div class="span4">
                         <div class="circle text-center purchased" id="month_plan">
@@ -152,37 +152,6 @@
                 <br>
                 <p class="text-center">Helmet and lock rentals are included with all plans.</p>
                 <hr>
-                <div id="payment_info">
-                    <form id="payment_methods" class="row-fluid text-center">
-                        Pay By:
-                        <input type="radio" name="payment" value="bursar" checked>Bursar
-                    <!--	<input type="radio" name="payment" value="credit">Credit -->
-                    </form>
-                    <p>You can also pay for a plan by cash at <a href="/about" taret="blank">Quaker Corner</a>, the PSA office.</p>
-                    <hr>
-                    <div class="descriptions">
-                        <p id="bursar_description">Bursar is a payment option provided by Student Financial Services. Bursar charges will be added to your next Penn bill, but you can start biking immediately.</p>
-                        <p id="credit_description" class="hidden">Credit card purchases are handled on an external website. Please allow a few hours for your payment to be processed.</p>
-                        <p id="cash_description" class="hidden">To pay by cash, come to <a href="/about#qc" target="blank">Quaker Corner</a> and pay at the front counter.<br><br>
-                        </p>
-                    </div>
-                    <div class="row-fluid text-center">
-                        <div class="span4 offset1">
-                            <p class="text-right"><span id="plan_name"></span> Plan: $<span id="subtotal">---</span></p>
-                            <p class="text-right">Tax: $<span id="tax">---</span></p>
-                            <h4 class="text-right">Total: $<span id="total">---</span></h4>
-                        </div>
-                        <div class="span5 offset2">
-                            <button class="btn btn-primary disabled" id="purchase_button">
-                                Choose a plan
-                            </button>
-                            <br><br>
-                            <p id="renew-select" style="display:none">
-                                <input type="checkbox" id="renew"> Automatically Renew
-                            </p>
-                        </div>
-                    </div>
-                </div>
         	{% endif %}
 		</div>
     </div>
