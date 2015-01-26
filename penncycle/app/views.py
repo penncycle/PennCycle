@@ -187,28 +187,37 @@ def verify_waiver(request):
     student.save()
     return HttpResponse(json.dumps({"success": True}), content_type="application/json")
 
-
-@require_POST
-def bursar(request):
-    data = request.POST
-    student = Student.objects.get(penncard=data.get("penncard"))
-    plan_element_id = data.get("plan")
-    plan = plan_element_id.replace("_", " ").title()
-    plan = Plan.objects.get(name=plan)
-    renew = data.get("renew")
+def process_data(data):
+    datamap = {}
+    datamap['student'] = Student.objects.get(penncard=data.get("penncard"))
+    plan = Plan.objects.get(name=data.get("plan"))
+    datamap['plan'] = plan
+    datamap['renew'] = False
     end_date = None
-    if (plan.name == "Semester Plan"):
+    if (plan.name == "Month Plan"):
+        end_date = timezone.datetime.now() + timezone.timedelta(days=31)
+    elif (plan.name == "Semester Plan"):
         end_date = datetime.date(2015, 5, 10)
     elif (plan.name == "Year Plan"):
         end_date = datetime.date(2015, 12, 18)
+    datamap['end_date'] = end_date
+    datamap['renew'] = False
+    return datamap
+    
+@require_POST
+def bursar(request):
+    data = request.POST
+    datamap = process_data(data)
+    student = datamap['student']
+    plan = datamap=['plan']
     payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
         satisfied=True,
         payment_type="bursar",
-        renew=renew,
-        end_date=end_date,
+        renew=datamap['renew'],
+        end_date=datamap['end_date'],
         payment_date=timezone.datetime.now()
     )
     payment.save()
@@ -222,7 +231,7 @@ def bursar(request):
         Bursar them, and if there is a problem, notify Razzi.
 
         Thanks!
-    '''.format(student.name, student.penncard, student.last_two, plan, renew, student.living_location)
+    '''.format(student.name, student.penncard, student.last_two, plan, datamap['renew'], student.living_location)
     send_mail(
         'Student Registered with Bursar',
         message,
@@ -237,16 +246,17 @@ def bursar(request):
 @require_POST
 def credit(request):
     data = request.POST
-    student = Student.objects.get(penncard=data.get("penncard"))
-    plan_element_id = data.get("plan")
-    plan = plan_element_id.replace("_", " ").title()
-    plan = Plan.objects.get(name=plan)
+    datamap = process_data(data)
+    student = datamap['student']
+    plan = datamap['plan'] 
     payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
         satisfied=False,
         payment_type="credit",
+        renew=datamap['renew'],
+        end_date=datamap['end_date']
     )
     payment.save()
     payment_email(student)
@@ -256,17 +266,18 @@ def credit(request):
 @require_POST
 def cash(request):
     data = request.POST
-    student = Student.objects.get(penncard=data.get("penncard"))
-    plan_element_id = data.get("plan")
-    plan = plan_element_id.replace("_", " ").title()
-    plan = Plan.objects.get(name=plan)
+    datamap = process_data(data)
+    student = datamap['student'] 
+    plan = datamap['plan'] 
     payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
-        purchase_date=timezone.datetime.today(),
-        satisfied=False,
+        payment_date=timezone.datetime.today(),
+        satisfied=True,
         payment_type="cash",
+        renew=datamap['renew'],
+        end_date=datamap['end_date']
     )
     payment.save()
     messages.info(request, "Your payment has been processed. Please come to Penn"
