@@ -89,6 +89,18 @@ class BikeDashboard(LoginRequiredMixin, TemplateView):
         context['bikes_for_checkin'] = bikes_for_checkin
         return context
 
+class Payments(LoginRequiredMixin, TemplateView):
+    template_name = "staff/payments.html"
+
+    def get_context_data(self):
+        context = super(Payments, self).get_context_data()
+        context['no_plans'] = [s for s in Student.objects.all() if not s.can_ride]
+        context['dayPrice'] = Plan.objects.get(name='Day Plan').cost
+        context['monthPrice'] = Plan.objects.get(name='Month Plan').cost
+        context['semesterPrice'] = Plan.objects.get(name='Semester Plan').cost
+        context['yearPrice'] = Plan.objects.get(name='Year Plan').cost
+        return context
+
 
 def login_required_ajax(function=None, redirect_field_name=None):
     """
