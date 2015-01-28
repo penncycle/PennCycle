@@ -7,7 +7,7 @@
 {% block content %}
 <div class="span8 offset2">
     <h3>Please log in.</h3>
-    <p>Don't know your PIN? Enter your penncard and <a href="#" id="send_pin">click here</a> to have it sent to your phone.</p>
+    <p>Don't know your PIN? Enter your penncard and <a href="#" id="send_pin">click here</a> to have it emailed to you.</p>
     <form method="post" action="/verify_pin/">
         {% csrf_token %}
         <div class="row-fluid">

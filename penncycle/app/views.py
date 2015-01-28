@@ -1,5 +1,5 @@
 import json
-
+import datetime
 from django.core.mail import send_mail
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -14,12 +14,13 @@ from django.utils import timezone
 from braces.views import LoginRequiredMixin
 
 from .models import Student, Station, Bike, Payment, Plan, Info
-from util.util import email_razzi, welcome_email, payment_email, send_welcome_text
+from util.util import email_razzi, welcome_email, payment_email
 from .forms import SignupForm, UpdateForm
 
-dayPrice = Plan.objects.get(name='Day Plan').cost
-basicPrice = Plan.objects.get(name='Basic Plan').cost
-unlimitedPrice = Plan.objects.get(name='Unlimited Plan').cost
+#global variables
+monthPrice = Plan.objects.get(name='Month Plan').cost
+semesterPrice = Plan.objects.get(name='Semester Plan').cost
+yearPrice = Plan.objects.get(name='Year Plan').cost
 
 def lookup(request):
     penncard = request.GET.get("penncard")
@@ -48,7 +49,7 @@ def verify_pin(request):
         messages.error(
             request,
             "Your pin did not match. <a href='/send_pin/?penncard={}'>Click here</a> "
-            "to resend it to {}.".format(penncard, student.phone)
+            "to send it to your email address.".format(penncard)
         )
         return render_to_response("signin.html", RequestContext(request, context))
     else:
@@ -62,11 +63,14 @@ def welcome(request):
         student = Student.objects.get(penncard=penncard)
     except Student.DoesNotExist:
         return HttpResponseRedirect("/signin/")
+    
     context = {
         "student": student, 
-        "dayPrice" : dayPrice, 
-        "basicPrice" : basicPrice,
-        "unlimitedPrice" : unlimitedPrice
+        "current_payment": student.current_payment,
+        "can_ride": student.can_ride,
+        "monthPrice": monthPrice, 
+        "semesterPrice": semesterPrice,
+        "yearPrice": yearPrice
     }
     return render_to_response("welcome.html", RequestContext(request, context))
 
@@ -84,9 +88,9 @@ class Index(TemplateView):
                 "latitude": bike.location.latitude,
                 "longitude": bike.location.longitude
             } for bike in Bike.objects.all()],
-            "dayPrice" : dayPrice, 
-            "basicPrice" : basicPrice,
-            "unlimitedPrice" : unlimitedPrice
+            "monthPrice": monthPrice, 
+            "semesterPrice": semesterPrice,
+            "yearPrice": yearPrice
         }
         return context
 
@@ -138,7 +142,6 @@ class Signup(CreateView):
 
 
         welcome_email(student)
-        send_welcome_text(student)
         self.request.session['penncard'] = student.penncard
         return HttpResponseRedirect('/safety-overview/')
 
@@ -184,26 +187,37 @@ def verify_waiver(request):
     student.save()
     return HttpResponse(json.dumps({"success": True}), content_type="application/json")
 
-
+def process_data(data):
+    datamap = {}
+    datamap['student'] = Student.objects.get(penncard=data.get("penncard"))
+    plan = Plan.objects.get(name=data.get("plan"))
+    datamap['plan'] = plan
+    datamap['renew'] = False
+    end_date = None
+    if (plan.name == "Month Plan"):
+        end_date = timezone.datetime.now() + timezone.timedelta(days=31)
+    elif (plan.name == "Semester Plan"):
+        end_date = datetime.date(2015, 5, 10)
+    elif (plan.name == "Year Plan"):
+        end_date = datetime.date(2015, 12, 18)
+    datamap['end_date'] = end_date
+    datamap['renew'] = False
+    return datamap
+    
 @require_POST
 def bursar(request):
     data = request.POST
-    student = Student.objects.get(penncard=data.get("penncard"))
-    plan_element_id = data.get("plan")
-    plan = plan_element_id.replace("_", " ").title()
-    plan = Plan.objects.get(name=plan)
-    renew = data.get("renew")
-    if renew == "true":
-        renew = True
-    else:
-        renew = False
+    datamap = process_data(data)
+    student = datamap['student']
+    plan = datamap=['plan']
     payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
         satisfied=True,
         payment_type="bursar",
-        renew=renew,
+        renew=datamap['renew'],
+        end_date=datamap['end_date'],
         payment_date=timezone.datetime.now()
     )
     payment.save()
@@ -217,7 +231,7 @@ def bursar(request):
         Bursar them, and if there is a problem, notify Razzi.
 
         Thanks!
-    '''.format(student.name, student.penncard, student.last_two, plan, renew, student.living_location)
+    '''.format(student.name, student.penncard, student.last_two, plan, datamap['renew'], student.living_location)
     send_mail(
         'Student Registered with Bursar',
         message,
@@ -232,16 +246,17 @@ def bursar(request):
 @require_POST
 def credit(request):
     data = request.POST
-    student = Student.objects.get(penncard=data.get("penncard"))
-    plan_element_id = data.get("plan")
-    plan = plan_element_id.replace("_", " ").title()
-    plan = Plan.objects.get(name=plan)
+    datamap = process_data(data)
+    student = datamap['student']
+    plan = datamap['plan'] 
     payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
         satisfied=False,
         payment_type="credit",
+        renew=datamap['renew'],
+        end_date=datamap['end_date']
     )
     payment.save()
     payment_email(student)
@@ -251,17 +266,18 @@ def credit(request):
 @require_POST
 def cash(request):
     data = request.POST
-    student = Student.objects.get(penncard=data.get("penncard"))
-    plan_element_id = data.get("plan")
-    plan = plan_element_id.replace("_", " ").title()
-    plan = Plan.objects.get(name=plan)
+    datamap = process_data(data)
+    student = datamap['student'] 
+    plan = datamap['plan'] 
     payment = Payment(
         amount=plan.cost,
         plan=plan,
         student=student,
-        purchase_date=timezone.datetime.today(),
-        satisfied=False,
+        payment_date=timezone.datetime.today(),
+        satisfied=True,
         payment_type="cash",
+        renew=datamap['renew'],
+        end_date=datamap['end_date']
     )
     payment.save()
     messages.info(request, "Your payment has been processed. Please come to Penn"

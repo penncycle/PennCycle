@@ -1,0 +1,82 @@
+{% extends 'base_admin.html' %}
+
+{% load partition %}
+
+{% block content %}
+
+    <div class="well">
+        <div class="row-fluid">
+            <div class="span12">
+                <h3>New Payment:</h3>
+                    <h4>Select student:</h4>
+                        <p><i>Students who haven't signed up for an account, or who already have an existing plan will not appear.</i></p>
+                    <div class="chzn-container">
+                        <select id="choose-penncard" data-placeholder="Enter PennCard#" style="width:250px;" class="chzn-select" tabindex="1">
+                            <option value="">Enter PennCard#</option>
+                        {% for s in no_plans %}
+                            <option value="{{ s.penncard }}">{{ s.penncard }} {{ s.name }}</option>
+                        {% endfor %}
+                        </select>
+                    <div>
+                    <br>
+                    <form id="choose-plan" class="row-fluid text-center">
+                        <h4>Choose Plan:</h4>
+                        <p><input type="radio" name="planType" value="Day">Day ${{ dayPrice }}</p>
+                        <p><input type="radio" name="planType" value="Month" checked>Month ${{ monthPrice }}</p>
+                        <p><input type="radio" name="planType" value="Semester">Semester ${{ semesterPrice }}</p>
+                        <p><input type="radio" name="planType" value="Year">Year ${{ yearPrice }}</p>
+                    </form>
+                    <button class="btn btn-primary disabled" id="record-payment">Record Payment</button>         
+                    <br>
+                    <hr>
+            </div>
+        </div>
+    <div> 
+
+
+{% endblock %}
+
+{% block scripts %}
+<script> 
+        
+        $("#choose-penncard").chosen().change(function() {
+
+            if ($("#choose-penncard").val() != "") { 
+                  $("#record-payment").removeClass("disabled");
+            }
+            
+            else {
+                if (!$("#record-payment").hasClass("disabled")) {
+                    $("#record-payment").addClass("disabled");
+                }
+            }
+            
+         });
+        
+        
+        $("#record-payment").click(function() {
+            if ($("#record-payment").hasClass("disabled")) {
+                return;
+            }
+            
+            var data = {
+                "penncard": $("#choose-penncard option:selected").text().substr(0, 8),
+                "renew": false,
+                "plan": $("input[name=planType]:checked").val() + " Plan"
+            };
+                
+
+            $.ajax({
+                type: "POST",
+                url: "/cash/",
+                data: data,
+                success: function(){
+                    location.reload();
+                },
+                error: function(error) {
+                    alert(error); 
+                } 
+            });  
+        });
+</script>
+{% endblock %}

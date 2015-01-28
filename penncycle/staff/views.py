@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from braces.views import LoginRequiredMixin
 
-from app.models import Bike, Student, Payment, Ride
+from app.models import Bike, Student, Payment, Ride, Station, Plan
 
 from util.util import email_razzi
 from util.lend import make_ride, checkin_ride
@@ -18,13 +18,18 @@ class Index(LoginRequiredMixin, TemplateView):
         context = super(Index, self).get_context_data()
         context['bikes'] = Bike.objects.all()
         context['available_bikes'] = Bike.objects.filter(status="available")
+        context['no_plans'] = [s for s in Student.objects.all() if not s.can_ride]
+        context['dayPrice'] = Plan.objects.get(name='Day Plan').cost
+        context['monthPrice'] = Plan.objects.get(name='Month Plan').cost
+        context['semesterPrice'] = Plan.objects.get(name='Semester Plan').cost
+        context['yearPrice'] = Plan.objects.get(name='Year Plan').cost
         return context
 
 class Emails(LoginRequiredMixin, TemplateView):
     template_name = "staff/emails.html"
 
     def get_context_data(self):
-        four_months_ago = timezone.now() + timezone.timedelta(days=-120)
+        four_months_ago = timezone.localtime(timezone.now()) + timezone.timedelta(days=-120)
         context = super(Emails, self).get_context_data()
         unlimited_plans = Payment.objects.filter(plan__name="Unlimited Plan", end_date__isnull=False, end_date__gte=four_months_ago)
         unlimited_emails = [p.student.email for p in unlimited_plans]
@@ -48,7 +53,7 @@ class BikeDashboard(LoginRequiredMixin, TemplateView):
         context = super(BikeDashboard, self).get_context_data()
         user = self.request.user
         try:
-            station = user.groups.exclude(name='Associate')[0]
+            station = Station.objects.get(name="PSA")
             station_name = station.name
         except IndexError:
             station = None
@@ -82,6 +87,18 @@ class BikeDashboard(LoginRequiredMixin, TemplateView):
         context['location'] = station_name
         context['bikes_for_checkout'] = bikes_for_checkout
         context['bikes_for_checkin'] = bikes_for_checkin
+        return context
+
+class Payments(LoginRequiredMixin, TemplateView):
+    template_name = "staff/payments.html"
+
+    def get_context_data(self):
+        context = super(Payments, self).get_context_data()
+        context['no_plans'] = [s for s in Student.objects.all() if not s.can_ride]
+        context['dayPrice'] = Plan.objects.get(name='Day Plan').cost
+        context['monthPrice'] = Plan.objects.get(name='Month Plan').cost
+        context['semesterPrice'] = Plan.objects.get(name='Semester Plan').cost
+        context['yearPrice'] = Plan.objects.get(name='Year Plan').cost
         return context
 
 
@@ -124,7 +141,7 @@ def checkout(request):
 @login_required_ajax
 def checkin(request):
     try:
-        station = request.user.groups.exclude(name='Associate')[0].name
+        station = Station.objects.get(name="PSA")
         student_id = request.POST.get("student_id")
         student = Student.objects.get(id=student_id)
         ride = student.ride_set.latest("checkout_time")

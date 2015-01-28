@@ -26,13 +26,15 @@
 				</div>
 				<div class="span2">
 					<h4>
-						<a href="{% url 'bike dashboard' %}">Bike Dashboard</a>
-						<a href="{% url 'emails' %}">Emails</a>
-						<a href="/logout/">Log out</a>
+						<p><a href="{% url 'bike dashboard' %}">Bike Dashboard</a></p>
+						<p><a href="{% url 'payments' %}">Payments</a></p>
+						<p><a href="{% url 'emails' %}">Emails</a></p>
+						<p><a href="/logout/">Log out</a></p>
 					</h4>
 				</div>
 			</div>
 		</div>
+        <br>
 
 		{% block content %}
 		{% endblock %}
@@ -40,9 +42,11 @@
 		<script src="{{ STATIC_URL }}js/jquery.js"></script>
 		<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 		<script src="{{ STATIC_URL }}js/chosen.jquery.js"></script>
+		<script src="{{ STATIC_URL }}js/django_ajax.js" type="text/javascript"></script>
 		<!-- more scripts -->
 		{% block scripts %}
 		{% endblock scripts %}
+        
 	</body>
 </html>
 

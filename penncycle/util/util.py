@@ -3,28 +3,18 @@ from django_twilio.client import twilio_client
 
 
 def send_pin_to_student(student):
-    try:
-        pin = student.pin
-        twilio_client.sms.messages.create(
-            to=student.twilio_phone,
-            body="Your PennCycle PIN is {}. "
-            "Login at penncycle.org/signin. "
-            "Once you buy a plan, check out bikes by texting "
-            "this number. Text 'help' for instructions.".format(pin),
-            from_="+12156885468"
-        )
-    except Exception as error:
-        email_razzi("Pin send failed: {}, {}".format(student, error))
-
-def send_welcome_text(student):
-    try:
-        twilio_client.sms.messages.create(
-            to=student.twilio_phone,
-            body="Welcome to PennCycle. Text 'help' to get started.",
-            from_="+12156885468"
-        )
-    except Exception as error:
-        email_razzi("send welcome text failed: {}, {}".format(student, error))
+    subject = "Welcome to PennCycle"
+    from_email = "messenger@penncycle.org"
+    to_email = student.email
+    text_content = """
+Your PennCycle PIN is {}. You can use it to log in at penncycle.org/login. 
+    """.format(student.pin)
+    html_content = """
+<p>Your PennCycle PIN is {}. You can use it to <a href="http://www.penncycle.org/login">log in</a> at penncycle.org.</p>
+    """.format(student.pin)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
 
 
 def email_razzi(message):
@@ -49,41 +39,36 @@ def welcome_email(student):
     subject = "Welcome to PennCycle"
     from_email = "messenger@penncycle.org"
     to_email = student.email
-    promotion = ""
-    if student.living_location in ["Fisher", "Ware"]:
-        promotion = ("As a resident of {}, you have automatically gotten "
-        "a free basic plan expiring at the end of the year.".format(student.living_location))
     text_content = """
 Thanks for joining PennCycle.
 
-Your PennCycle PIN is {}. You can use it to log in at penncycle.org/login. Once you log in, you can add plans, sign the required waiver, and change your PIN.
+Your PennCycle PIN is {}. You can use it to log in at penncycle.org/login. 
 
-Helmets are required for riding and can be rented or purchased at Quaker Corner.
+To ride, you first need to purchase a PennCycle plan, either online or in-person at Quaker Corner. Then visit us at Quaker Corner to check-out a bike. Helmets are required for riding and can also be rented or purchased at Quaker Corner.
+
+Quaker Corner is open Monday - Friday, 10 am - 6 pm.
 
 Have a question, concern, or suggestion? Email us at messenger@penncycle.org.
-
-{promotion}
 
 Happy Cycling!
 
 The PennCycle Team
-    """.format(student.pin, promotion=promotion)
+    """.format(student.pin)
     html_content = """
 <p>Thanks for joining PennCycle.</p>
 
-<p>Your PennCycle PIN is {}. You can use it to <a href="http://www.penncycle.org/login">log in</a> at penncycle.org. Once you log in, you can add plans, sign the required waiver, and change your PIN.</p>
+<p>Your PennCycle PIN is {}. You can use it to <a href="http://www.penncycle.org/login">log in</a> at penncycle.org.</p>
 
-<p>Helmets are required for riding and can be rented for free or purchased at <a href='http://www.penncycle.org/about#qc'>Quaker Corner</a>.</p>
+<p>To ride, you first need to purchase a PennCycle plan, either online or in-person at <a href='http://www.penncycle.org/about'>Quaker Corner</a>. Then visit us at Quaker Corner to check-out a bike. Helmets are required for riding and can also be rented or purchased at Quaker Corner.</p>
+
+<p>Quaker Corner is open Monday - Friday, 10 am - 6 pm.</p>
 
 <p>Have a question, concern, or suggestion? Email us at messenger@penncycle.org.</p>
-
-<p>{promotion}</p>
 
 <p>Happy Cycling!</p>
 
 <p>The PennCycle Team</p>
-    """.format(student.pin, promotion=promotion)
-    # Bikes can be checked out using the free phone app. Don't have a smartphone? Text 'Help' to 215-688-5468 for instructions on how to check out bikes through texting.
+    """.format(student.pin)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
@@ -97,9 +82,7 @@ Dear {},
 
 Your monthly PennCycle membership will expire on {}!
 
-It's easy to renew your subscription to PennCycle. Just log in to your account on the PennCycle website and add a Basic or Unlimited plan,
-or click the renew button on a current plan to have it automatically renew by bursar. You can pay for a new plan with bursar or credit online
-or by coming to Quaker Corner (Williams Hall Room 117) and paying with cash.
+To keep riding, purchase a new plan at www.penncycle.org or in-person at Quaker Corner.
 
 We hope you have enjoyed PennCycle. Please let us know if you have any questions or if we can help you out in any way.
 
@@ -112,9 +95,7 @@ Bobby and the PennCycle Team
 
 <p>Your monthly PennCycle membership will expire on {}!</p>
 
-<p>It's easy to renew your subscription to PennCycle. Just <a href="http://www.penncycle.org/login">log in</a> to your account on the PennCycle website and add a Basic or Unlimited plan,
-or click the renew button on a current plan to have it automatically renew by bursar. You can pay for a new plan with bursar or credit online
-or by coming to <a href='http://www.penncycle.org/about#qc'>Quaker Corner</a> (Williams Hall Room 117) and paying with cash.</p>
+<p>To keep riding, purchase a new plan at <a href='http://www.penncycle.org'>www.penncycle.org</a> or in-person at <a href='http://www.penncycle.org/about'>Quaker Corner</a>.</p>
 
 <p>We hope you have enjoyed PennCycle. Please let us know if you have any questions or if we can help you out in any way. </p>
 
@@ -134,21 +115,15 @@ def payment_email(student):
     text_content = """
 Dear {},
 
-Thank you for signing up for a PennCycle plan! Once your payment is processed, you will be eligible to check out PennCycles from any of our locations on campus.
-
-In order to check out bikes, text 'help' to 215-688-5468 for instructions. The basic commands are 'check out (bike)' and 'check in (location)'.
+Thank you for signing up for a PennCycle plan! Once your payment is processed, you will be eligible to check out PennCycles from Quaker Corner.
 
 While using PennCycle, keep the following in mind:
 
 1. Before riding do an ABC Check (Air in Tires, Brakes, Chain)
 
-2. If you experience any problems while riding or finding a bike, email messenger@penncycle.org.
+2. If your tires feel flat you can pump them up at the bike racks to the next to Pottruck, by the Chemistry Building, and at Quaker Corner, or email us at messenger@penncycle.org and we'll pump them up for you!
 
-3. Remember to physically locate the bike you want to check out before texting. This is very important and ensures that you will not be liable for damage/loss of a bike whose location you were unaware of.
-
-4. If your tires feel flat you can pump them up at the bike racks to the next to Pottruck, by the Chemistry Building, and at Quaker Corner, or email us at messenger@penncycle.org and we'll pump them up for you!
-
-5. Always lock up your bike properly! See the attached picture of a properly locked bike. Ensure the lock goes through the rack, the front wheel and a sturdy part of the frame. If you can't include the front wheel, be sure to include the frame. PennCycle will charge a $5 fee for an improperly locked bike. Never lock your bike to a garbage can, or bench.
+3. Always lock up your bike properly! See the attached picture of a properly locked bike. Ensure the lock goes through the rack, the front wheel and a sturdy part of the frame. If you can't include the front wheel, be sure to include the frame. PennCycle will charge a $5 fee for an improperly locked bike. Never lock your bike to a garbage can, or bench.
 
 We hope that you enjoy your PennCycle experience!
 
@@ -159,17 +134,11 @@ Bobby and the PennCycle Team
     html_content = """
 <p>Dear {},</p>
 
-<p>Thank you for signing up for a PennCycle plan! Once your payment is processed, you will be eligible to check out PennCycles from any of our locations on campus.</p>
-
-<p>In order to check out bikes, text 'help' to 215-688-5468 for instructions. The basic commands are 'check out (bike)' and 'check in (location)'.</p>
+<p>Thank you for signing up for a PennCycle plan! Once your payment is processed, you will be eligible to check out PennCycles from Quaker Corner.</p>
 
 <p>While using PennCycle, keep the following in mind:</p>
 <ol>
     <li>Before riding do an ABC Check (Air in Tires, Brakes, Chain)</li>
-
-    <li>If you experience any problems while riding or finding a bike, email messenger@penncycle.org.</li>
-
-    <li><b>Remember to physically locate the bike you want to check out before texting.</b> This is very important and ensures that you will not be liable for damage/loss of a bike whose location you were unaware of.</li>
 
     <li>If your tires feel flat you can pump them up at the bike racks to the next to Pottruck, by the Chemistry Building, and at Quaker Corner, or email us at messenger@penncycle.org and we'll pump them up for you!</li>
 
