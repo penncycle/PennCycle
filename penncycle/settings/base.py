@@ -2,6 +2,8 @@ import os
 
 from unipath import Path
 
+import dj_database_url
+
 
 ADMINS = (
     ('Razzi Abuissa', 'razzi53@gmail.com'),
@@ -12,7 +14,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ALLOWED_HOSTS = [".penncycle.org", ".herokuapp.com", ".localhost"]
+ALLOWED_HOSTS = ['.penncycle.org', '.herokuapp.com', '.localhost']
 
 TIME_ZONE = 'America/New_York'
 
@@ -32,7 +34,7 @@ MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
-# Examples: "http://example.com/media/", "http://media.example.com/"
+# Examples: 'http://example.com/media/', 'http://media.example.com/'
 MEDIA_URL = ''
 
 STATIC_URL = '/static/'
@@ -43,13 +45,17 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 )
+
+DATABASES = {
+    'default': dj_database_url.config()
+}
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -66,20 +72,20 @@ ROOT_URLCONF = 'penncycle.urls'
 WSGI_APPLICATION = 'wsgi.application'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.request",
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
 )
 
 TEMPLATE_DIRS = (
-    PROJECT_DIR.child("templates"),
-    PROJECT_DIR.child("templates").child("staff"),
-    PROJECT_DIR.child("templates").child("registration"),
+    PROJECT_DIR.child('templates'),
+    PROJECT_DIR.child('templates').child('staff'),
+    PROJECT_DIR.child('templates').child('registration'),
 )
 
 INSTALLED_APPS = (
@@ -137,13 +143,13 @@ LOGGING = {
     }
 }
 
-TWILIO_ACCOUNT_SID = os.environ["TWILIO_ACCOUNT_SID"]
-TWILIO_AUTH_TOKEN = os.environ["TWILIO_AUTH_TOKEN"]
+TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
+TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
 TWILIO_DEFAULT_CALLERID = 'PennCycle'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'messenger@penncycle.org'
-EMAIL_HOST_PASSWORD = os.environ["PENNCYCLE_PASSWORD"]
+EMAIL_HOST_PASSWORD = os.environ['PENNCYCLE_PASSWORD']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 SERVER_EMAIL = 'messenger@penncycle.org'
