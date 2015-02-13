@@ -157,7 +157,76 @@
 		</div>
     </div>
 
-    <div class="span3">
+    <div class="row-fluid">
+        <div class="span5 offset1">
+            <form id="request-bike-form" class="row-fluid text-center">
+                <h4>Request a Bike:</h4>
+                <div id="div_id_name" class="control-group">
+                    <label for="id_name" class="control-label requiredField">
+                        Name<span class="asteriskField">*</span>
+                    </label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_name" maxlength="100" name="name" type="text" />
+                    </div>
+                </div>
+                <div id="div_id_phone" class="control-group">
+                    <label for="id_phone" class="control-label requiredField">
+                        Phone<span class="asteriskField">*</span>
+                    </label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_phone" maxlength="20" name="phone" type="text" />
+                    </div>
+                </div>
+                <div id="div_id_email" class="control-group">
+                    <label for="id_email" class="control-label requiredField">
+                        Email<span class="asteriskField">*</span>
+                    </label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_email" maxlength="75" name="email" type="text" /> </div>
+                    </div>
+                </div>
+                 <div id="div_id_approx_height" class="control-group">
+                    <label for="id_approx_height" class="control-label requiredField">
+                        Approximate Height<span class="asteriskField">*</span>
+                    </label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_approx_height" maxlength="20" name="approx_height" type="text" />
+                    </div>
+                </div>
+                <div id="div_id_bike_type" class="control-group">
+                    <label for="id_bike_type" class="control-label requiredField">
+                        Bike Type Preferred<span class="asteriskField">*</span>
+                    </label>
+                    <div class="controls">
+                        <select class="select" id="choose-bike-type" name="bike_type">
+                            <option value="Mountain">Mountain</option>
+                            <option value="Hybrid">Hybrid</option>
+                            <option value="Road">Road</option>
+                            <option value="Cruiser">Cruiser</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="div_id_name_lead" class="control-group">
+                    <label for="id_name_lead" class="control-label requiredField">
+                        Name of Person leading the ride<span class="asteriskField">*</span>
+                    </label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_name_lead" maxlength="100" name="name_lead" type="text" />
+                    </div>
+                </div>
+                <div id="div_id_email_lead" class="control-group">
+                    <label for="id_email_lead" class="control-label requiredField">
+                        Email of person leading the ride<span class="asteriskField">*</span>
+                    </label>
+                    <div class="controls">
+                        <input class="textinput textInput" id="id_email_lead" maxlength="75" name="email_lead" type="text" /> 
+                    </div>
+                </div>
+            </form>
+        </div>
+            <button class="btn btn-primary disabled" id="request-bike">Request Bike</button>
+    </div>  
+     <div class="span3">
         <div class="text-center">
             <img src="{{ STATIC_URL}}img/helmet.png" class="text-center">
         </div>
@@ -223,6 +292,36 @@
 			$("#payment_info").hide();
 		});
 	});
+
+    $("#request-bike").click(function() {
+            if ($("#request-bike").hasClass("disabled")) {
+                return;
+            }
+            
+            var data = {
+                "penncard": $("#choose-bike-type option:selected").text().substr(0, 8),
+                "name": $("#name").text(),
+                "phone": $("#phone").text(),
+                "email": $("#email").text(),
+                "approx_height": $("#approx_height").text(),
+                "bike_type": $("#choose-bike-type option:selected").text(),
+                "name_lead": $("#name_lead").text(),
+                "email_lead": $("#email_lead").text(),
+            };
+                
+
+            $.ajax({
+                type: "POST",
+                url: "/bike_request/",
+                data: data,
+                success: function(){
+                    location.reload();
+                },
+                error: function(error) {
+                    alert(error); 
+                } 
+            });  
+        });
 /*
 	$("#accept").click(function() {
 		$.post(

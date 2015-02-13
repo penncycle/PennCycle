@@ -14,7 +14,7 @@ from django.utils import timezone
 from braces.views import LoginRequiredMixin
 
 from .models import Student, Station, Bike, Payment, Plan, Info
-from util.util import email_razzi, welcome_email, payment_email
+from util.util import email_razzi, welcome_email, payment_email, email_managers
 from .forms import SignupForm, UpdateForm
 
 #global variables
@@ -149,6 +149,21 @@ class Signup(CreateView):
     def dispatch(self, *args, **kwargs):
         return super(Signup, self).dispatch(*args, **kwargs)
 
+class GroupRideRequest(CreateView):
+    model = Student
+    template_name = "groupride.html"
+    form_class = GroupRideForm
+
+    def get_initial(self):
+        pass
+
+    def form_valid(self, form):
+        pass
+
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(Signup, self).dispatch(*args, **kwargs)
+
 
 @require_POST
 @csrf_exempt
@@ -209,7 +224,7 @@ def bursar(request):
     data = request.POST
     datamap = process_data(data)
     student = datamap['student']
-    plan = datamap=['plan']
+    plan = datamap['plan']
     payment = Payment(
         amount=plan.cost,
         plan=plan,
@@ -285,6 +300,10 @@ def cash(request):
     payment_email(student)
     return HttpResponse("success")
 
+@require_POST
+def bike_request(request):
+    data = request.POST
+    pass
 
 class Stats(LoginRequiredMixin, TemplateView):
     template_name = "stats.html"

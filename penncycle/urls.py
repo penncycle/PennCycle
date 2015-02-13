@@ -38,6 +38,7 @@ urlpatterns = patterns(
     (r'^safety-overview/$', TemplateView.as_view(template_name="safety_overview.html")),
     (r'^thank.*$', thanks),
     (r'^waiver/$', TemplateView.as_view(template_name="waiver_7-29-14.html")),
+    (r'^groupride/$', TemplateView.as_view(template_name="groupride.html")),
 
     # Backend-related
     (r'^verify_payment/$', verify_payment),
@@ -50,6 +51,7 @@ urlpatterns = patterns(
     (r'^dump/$', dump),
     (r'^combo/$', combo),
     (r'^modify_payment/$', modify_payment),
+    (r'^bike_request/$', bike_request),
 
 
     # Twilio

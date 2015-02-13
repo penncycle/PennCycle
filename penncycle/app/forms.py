@@ -54,6 +54,41 @@ class SignupForm(forms.ModelForm):
     gender = forms.TypedChoiceField(
         choices=(("M", "Male"), ("F", "Female")),
     )
+    
+class GroupRideForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UpdateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    'name',
+                    'organization',
+                    'position_in_organization',
+                    'destination', css_class="span5 offset1"
+                ), Div(
+                    'approximate_duration',
+                    'number_bikes',
+                    'ispenncycle_representative_needed',
+                ), css_class="row-fluid"
+            )
+        )
+        self.helper.form_action = '/groupride/'
+        self.helper.add_input(Submit('groupride', "Group Ride Request"))
+        self.helper.form_method = 'post'
+        self.fields['last_two'].label = "Last two digits of PennCard"
+
+        pass
+
+    '''Name, Organization, Position in Organization,
+    Destination of Ride, Approximate duration of the ride, 
+    total number of bikes needed (maximum 10). 
+    PennCycle representative Lead
+    '''
+
+    class Meta:
+        #model 
+        #field
 
 class UpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
