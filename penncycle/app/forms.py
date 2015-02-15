@@ -86,10 +86,6 @@ class GroupRideForm(forms.ModelForm):
     PennCycle representative Lead
     '''
 
-    class Meta:
-        #model 
-        #field
-
 class UpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UpdateForm, self).__init__(*args, **kwargs)

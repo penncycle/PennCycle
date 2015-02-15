@@ -10,7 +10,7 @@ from app.views import (
     Index, Signup, Locations, Bikes, welcome, StudentUpdate,
     verify_payment, verify_waiver, verify_pin, lookup,
     bursar, credit, cash, combo, modify_payment, Stats,
-    thanks
+    thanks, bike_request
 )
 from app.dump import dump
 from mobile.views import sms, send_pin

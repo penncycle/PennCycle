@@ -101,9 +101,59 @@
 {% block content %}
 <div class="well">
     <div class="row-fluid">
-    <div class="span9">
+    <div class="span12">
 	    <div class="welcome">
 		    <h4>Welcome, {{ student.name }}! <a href="/update/">Manage account info</a></h4>
+            <div class="row-fluid">
+                <div class="span6 well">
+                    <!--<form id="request-bike-form" class="row-fluid text-center"> -->
+                        <h2 class="text-center">Request a Bike</h2>
+                        <div id="div_id_approx_height" class="chzn-container" data-placeholder="In feet and inches">
+                            <label for="id_approx_height" class="control-label requiredField">
+                                Approximate Height<span class="asteriskField">*</span>
+                            </label>
+                            <div class="controls">
+                                <input class="textinput textInput" id="id_approx_height" maxlength="20" name="approx_height" type="text" />
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="chzn-container" id="div_id_bike_type">
+                        <label for="id_bike_type" class="control-label requiredField">
+                                Bike Type Preferred<span class="asteriskField">*</span>
+                            </label>
+                            <select id="choose-bike-type" name ="bike_type" data-placeholder="Bike Type Preferred" style="width:250px;" class="chzn-select" tabindex="1">
+                                <option value="Mountain" selected="selected">Mountain</option>
+                                <option value="Hybrid">Hybrid</option>
+                                <option value="Road">Road</option>
+                                <option value="Cruiser">Cruiser</option>
+                            </select>
+                        </div>
+                        <br/>
+                        <div id="div_id_available_time" class="chzn-container">
+                            <label for="id_available_time" class="control-label requiredField">
+                                When would you be avaiable to pick up the bike?<span class="asteriskField">*</span>
+                            </label>
+                            <div class="controls">
+                                <select class="select" id="choose-available-time" name="available_time" data-placeholder="When would you be avaiable to pick up the bike?" style="width:250px;" class="chzn-select" tabindex="1">
+                                    <option value="Mountain" selected="selected">Mondays 9am - 12pm</option>
+                                    <option value="Hybrid">Mondays 6pm - 7pm</option>
+                                    <option value="Road">Wednesday 10am - 12pm</option>
+                                    <option value="Road">Wednesday 8pm - 9pm</option>
+                                    <option value="Cruiser">Friday 9am - 11am</option>
+                                </select>
+                            </div>
+                        </div>
+                    <!--</form>-->
+                    <br/>
+                    <button class="btn btn-primary disabled" id="request-bike">Request Bike</button>
+                </div>
+                <div class="span3 offset3"> 
+                    <div class="text-center">
+                        <img src="{{ STATIC_URL}}img/helmet.png" class="text-center">
+                    </div>
+                    <p> You must have a helmet to ride PennCycle. If you need one, you can borrow or buy a helmet from <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a>. Read more about safety <a href="/safety">here</a>.</p>
+                </div>
+            </div>
             {% if student.can_ride %}
 			    <div class="payments">
 				    <h3 class="text-center">Your PennCycle Plan</h3>
@@ -155,83 +205,7 @@
                 <hr>
         	{% endif %}
 		</div>
-    </div>
-
-    <div class="row-fluid">
-        <div class="span5 offset1">
-            <form id="request-bike-form" class="row-fluid text-center">
-                <h4>Request a Bike:</h4>
-                <div id="div_id_name" class="control-group">
-                    <label for="id_name" class="control-label requiredField">
-                        Name<span class="asteriskField">*</span>
-                    </label>
-                    <div class="controls">
-                        <input class="textinput textInput" id="id_name" maxlength="100" name="name" type="text" />
-                    </div>
-                </div>
-                <div id="div_id_phone" class="control-group">
-                    <label for="id_phone" class="control-label requiredField">
-                        Phone<span class="asteriskField">*</span>
-                    </label>
-                    <div class="controls">
-                        <input class="textinput textInput" id="id_phone" maxlength="20" name="phone" type="text" />
-                    </div>
-                </div>
-                <div id="div_id_email" class="control-group">
-                    <label for="id_email" class="control-label requiredField">
-                        Email<span class="asteriskField">*</span>
-                    </label>
-                    <div class="controls">
-                        <input class="textinput textInput" id="id_email" maxlength="75" name="email" type="text" /> </div>
-                    </div>
-                </div>
-                 <div id="div_id_approx_height" class="control-group">
-                    <label for="id_approx_height" class="control-label requiredField">
-                        Approximate Height<span class="asteriskField">*</span>
-                    </label>
-                    <div class="controls">
-                        <input class="textinput textInput" id="id_approx_height" maxlength="20" name="approx_height" type="text" />
-                    </div>
-                </div>
-                <div id="div_id_bike_type" class="control-group">
-                    <label for="id_bike_type" class="control-label requiredField">
-                        Bike Type Preferred<span class="asteriskField">*</span>
-                    </label>
-                    <div class="controls">
-                        <select class="select" id="choose-bike-type" name="bike_type">
-                            <option value="Mountain">Mountain</option>
-                            <option value="Hybrid">Hybrid</option>
-                            <option value="Road">Road</option>
-                            <option value="Cruiser">Cruiser</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="div_id_name_lead" class="control-group">
-                    <label for="id_name_lead" class="control-label requiredField">
-                        Name of Person leading the ride<span class="asteriskField">*</span>
-                    </label>
-                    <div class="controls">
-                        <input class="textinput textInput" id="id_name_lead" maxlength="100" name="name_lead" type="text" />
-                    </div>
-                </div>
-                <div id="div_id_email_lead" class="control-group">
-                    <label for="id_email_lead" class="control-label requiredField">
-                        Email of person leading the ride<span class="asteriskField">*</span>
-                    </label>
-                    <div class="controls">
-                        <input class="textinput textInput" id="id_email_lead" maxlength="75" name="email_lead" type="text" /> 
-                    </div>
-                </div>
-            </form>
-        </div>
-            <button class="btn btn-primary disabled" id="request-bike">Request Bike</button>
     </div>  
-     <div class="span3">
-        <div class="text-center">
-            <img src="{{ STATIC_URL}}img/helmet.png" class="text-center">
-        </div>
-        <p> You must have a helmet to ride PennCycle. If you need one, you can borrow or buy a helmet from <a href="https://www.facebook.com/pages/Penn-Student-Agencies/112169602192296?id=112169602192296&sk=page_map" target="blank">Penn Student Agencies</a>. Read more about safety <a href="/safety">here</a>.</p>
-    </div>
     </div>
 </div>
 <br>
@@ -294,19 +268,12 @@
 	});
 
     $("#request-bike").click(function() {
-            if ($("#request-bike").hasClass("disabled")) {
-                return;
-            }
             
             var data = {
-                "penncard": $("#choose-bike-type option:selected").text().substr(0, 8),
-                "name": $("#name").text(),
-                "phone": $("#phone").text(),
-                "email": $("#email").text(),
-                "approx_height": $("#approx_height").text(),
-                "bike_type": $("#choose-bike-type option:selected").text(),
-                "name_lead": $("#name_lead").text(),
-                "email_lead": $("#email_lead").text(),
+                "penncard": "{{ student.penncard }}",
+                "approx_height": $("#id_approx_height").val(),
+                "bike_type" : $("#choose-bike-type option:selected").text(),
+                "available_time" : $("#choose-available-time option:selected").text()
             };
                 
 

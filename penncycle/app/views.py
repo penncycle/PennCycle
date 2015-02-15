@@ -14,7 +14,7 @@ from django.utils import timezone
 from braces.views import LoginRequiredMixin
 
 from .models import Student, Station, Bike, Payment, Plan, Info
-from util.util import email_razzi, welcome_email, payment_email, email_managers
+from util.util import email_razzi, welcome_email, payment_email, email_managers, request_bike_email
 from .forms import SignupForm, UpdateForm
 
 #global variables
@@ -149,7 +149,7 @@ class Signup(CreateView):
     def dispatch(self, *args, **kwargs):
         return super(Signup, self).dispatch(*args, **kwargs)
 
-class GroupRideRequest(CreateView):
+'''class GroupRideRequest(CreateView):
     model = Student
     template_name = "groupride.html"
     form_class = GroupRideForm
@@ -162,7 +162,7 @@ class GroupRideRequest(CreateView):
 
     @csrf_exempt
     def dispatch(self, *args, **kwargs):
-        return super(Signup, self).dispatch(*args, **kwargs)
+        return super(Signup, self).dispatch(*args, **kwargs)'''
 
 
 @require_POST
@@ -303,7 +303,13 @@ def cash(request):
 @require_POST
 def bike_request(request):
     data = request.POST
-    pass
+    student = Student.objects.get(penncard=data.get("penncard"))
+    approx_height = data.get("approx_height")
+    bike_type = data.get("bike_type")
+    available_time = data.get("available_time")
+    request_bike_email(bike_type, available_time, student)
+    return HttpResponse('success')
+    
 
 class Stats(LoginRequiredMixin, TemplateView):
     template_name = "stats.html"
