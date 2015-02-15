@@ -203,3 +203,38 @@ def feedback_email(message, penncard, student=None):
         )
 
     email_managers("App feedback: {}".format(message), content)
+
+
+def request_bike_email(bike_type, available_time, student):
+    subject = "Bike Request PennCycle"
+    from_email = "messenger@penncycle.org"
+    to_email = student.email
+    text_content = """
+Thanks for requesting a bike at PennCycle.
+
+Your request for a {} bike will be processed and we will get back to you soon to get a bike of your preference.
+
+Visit us at Quaker Corner to check-out a bike on {}. Helmets are required for riding and can also be rented or purchased at Quaker Corner.
+
+Have a question, concern, or suggestion? Email us at messenger@penncycle.org.
+
+Happy Cycling!
+
+The PennCycle Team
+    """.format(bike_type, available_time)
+    html_content = """
+<p>Thanks for requesting a bike at PennCycle.</p>
+
+<p>Your request for a {} bike will be processed and we will get back to you soon to get a bike of your preference.</p>
+
+<p>Visit us at Quaker Corner to check-out your bike on {}. Helmets are required for riding and can also be rented or purchased at Quaker Corner.</p>
+
+<p>Have a question, concern, or suggestion? Email us at messenger@penncycle.org.</p>
+
+<p>Happy Cycling!</p>
+
+<p>The PennCycle Team</p>
+    """.format(bike_type, available_time)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
