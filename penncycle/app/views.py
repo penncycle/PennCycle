@@ -307,7 +307,7 @@ def bike_request(request):
     approx_height = data.get("approx_height")
     bike_type = data.get("bike_type")
     available_time = data.get("available_time")
-    request_bike_email(bike_type, available_time, student)
+    request_bike_email(bike_type, approx_height, available_time, student)
     return HttpResponse('success')
     
 

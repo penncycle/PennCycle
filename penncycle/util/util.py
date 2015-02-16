@@ -205,36 +205,49 @@ def feedback_email(message, penncard, student=None):
     email_managers("App feedback: {}".format(message), content)
 
 
-def request_bike_email(bike_type, available_time, student):
-    subject = "Bike Request PennCycle"
+def request_bike_email(bike_type, approx_height, available_time, student):
+    subject = "PennCycle Bike Request"
     from_email = "messenger@penncycle.org"
     to_email = student.email
+    current_payment = student.current_payment
+    plan_info = ""
+    if (current_payment):
+        plan_info = "{}, expiring on {}".format(current_payment.plan.name, current_payment.end_date.strftime("%m/%d/%y"))
+    else:
+        plan_info = "You currently don't have a plan. Please purchase a plan when you collect your bike."   
     text_content = """
-Thanks for requesting a bike at PennCycle.
+Dear {}, 
 
-Your request for a {} bike will be processed and we will get back to you soon to get a bike of your preference.
+Thanks for requesting a PennCycle bike with the following information:
 
-Visit us at Quaker Corner to check-out a bike on {}. Helmets are required for riding and can also be rented or purchased at Quaker Corner.
+Approximate height: {}
+Bike type: {}
+Available times to collect bike from Quaker Corner: {}
+Current Plan: {}  
 
-Have a question, concern, or suggestion? Email us at messenger@penncycle.org.
+We're choosing the right bike for you and will email you back within 48 hours. Have a question, concern, or suggestion? Email us at messenger@penncycle.org.
 
 Happy Cycling!
 
 The PennCycle Team
-    """.format(bike_type, available_time)
+    """.format(student.name, approx_height, bike_type, available_time, plan_info)
     html_content = """
-<p>Thanks for requesting a bike at PennCycle.</p>
+</p>Dear {},</p> 
 
-<p>Your request for a {} bike will be processed and we will get back to you soon to get a bike of your preference.</p>
+<p>Thanks for requesting a PennCycle bike with the following information:</p>
+<ul>
+    <li>Approximate height: {}</li>
+    <li>Bike type: {}</li>
+    <li>Available times to collect bike from Quaker Corner: {}</li>
+    <li>Current Plan: {}</li>
+</ul>
 
-<p>Visit us at Quaker Corner to check-out your bike on {}. Helmets are required for riding and can also be rented or purchased at Quaker Corner.</p>
-
-<p>Have a question, concern, or suggestion? Email us at messenger@penncycle.org.</p>
+<p>We're choosing the right bike for you and will email you back within 48 hours. Have a question, concern, or suggestion? Email us at messenger@penncycle.org.</p>
 
 <p>Happy Cycling!</p>
 
 <p>The PennCycle Team</p>
-    """.format(bike_type, available_time)
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+    """.format(student.name, approx_height, bike_type, available_time, plan_info)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email, "messenger@penncycle.org"])
     msg.attach_alternative(html_content, "text/html")
     msg.send()

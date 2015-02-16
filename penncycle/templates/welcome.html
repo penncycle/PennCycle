@@ -105,15 +105,16 @@
 	    <div class="welcome">
 		    <h4>Welcome, {{ student.name }}! <a href="/update/">Manage account info</a></h4>
             <div class="row-fluid">
-                <div class="span6 well">
+                <div class="span8 well">
                     <!--<form id="request-bike-form" class="row-fluid text-center"> -->
                         <h2 class="text-center">Request a Bike</h2>
-                        <div id="div_id_approx_height" class="chzn-container" data-placeholder="In feet and inches">
+                        <p>We'll get the right bike for you and email you back within 48 hours.</p>
+                        <div id="div_id_approx_height" class="chzn-container">
                             <label for="id_approx_height" class="control-label requiredField">
                                 Approximate Height<span class="asteriskField">*</span>
                             </label>
                             <div class="controls">
-                                <input class="textinput textInput" id="id_approx_height" maxlength="20" name="approx_height" type="text" />
+                                <input class="textInput" id="id_approx_height" maxlength="20" name="approx_height" type="text" />
                             </div>
                         </div>
                         <br/>
@@ -131,15 +132,15 @@
                         <br/>
                         <div id="div_id_available_time" class="chzn-container">
                             <label for="id_available_time" class="control-label requiredField">
-                                When would you be avaiable to pick up the bike?<span class="asteriskField">*</span>
+                                When can you collect your bike at <a href="/about/">Quaker Corner</a>?<span class="asteriskField">*</span>
                             </label>
                             <div class="controls">
-                                <select class="select" id="choose-available-time" name="available_time" data-placeholder="When would you be avaiable to pick up the bike?" style="width:250px;" class="chzn-select" tabindex="1">
-                                    <option value="Mountain" selected="selected">Mondays 9am - 12pm</option>
-                                    <option value="Hybrid">Mondays 6pm - 7pm</option>
-                                    <option value="Road">Wednesday 10am - 12pm</option>
-                                    <option value="Road">Wednesday 8pm - 9pm</option>
-                                    <option value="Cruiser">Friday 9am - 11am</option>
+                                <select class="select" id="choose-available-time" name="available_time" data-placeholder="When can you collect the bike from Quaker Corner?" style="width:250px;" class="chzn-select" tabindex="1">
+                                    <option value="Mountain" selected="selected">Monday 9 am - 12 noon</option>
+                                    <option value="Hybrid">Monday 6 pm - 7 pm</option>
+                                    <option value="Road">Wednesday 10 am - 12 noon</option>
+                                    <option value="Road">Wednesday 8 pm - 9 pm</option>
+                                    <option value="Cruiser">Friday 9 am - 11 am</option>
                                 </select>
                             </div>
                         </div>
@@ -147,7 +148,7 @@
                     <br/>
                     <button class="btn btn-primary disabled" id="request-bike">Request Bike</button>
                 </div>
-                <div class="span3 offset3"> 
+                <div class="span3 offset1"> 
                     <div class="text-center">
                         <img src="{{ STATIC_URL}}img/helmet.png" class="text-center">
                     </div>
@@ -172,7 +173,7 @@
                     <p>You can purchase a new plan once your current one expires.</p>
                 </div>
             {% else %}
-                <h4>Please visit <a href="/about/">Quaker Corner</a> to purchase a plan and checkout a bike.</h4>  
+                <h4>You would need to purchase a PennCycle plan when you come to collect your bike.</h4>  
                 <h2 class="text-center">Our Plans</h2>
                 <div class="row-fluid">
                     <div class="span4">
@@ -201,7 +202,6 @@
                     </div>
                 </div>
                 <br>
-                <p class="text-center">Helmet and lock rentals are included with all plans.</p>
                 <hr>
         	{% endif %}
 		</div>
@@ -316,9 +316,9 @@
 		}
 	}
 	$(".circle").click(function() {
-		$(this).addClass("selected");
+	/*	$(this).addClass("selected");
 		$(".circle").not(this).removeClass("selected");
-		$("#purchase_button").removeClass("disabled");
+		$("#purchase_button").removeClass("disabled");*/
         var basePriceStr = "0";
         var basePrice = 0;
         var tax = 0;
