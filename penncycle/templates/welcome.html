@@ -481,36 +481,35 @@
         $modal.open({content: $text, height: $ht, width: $wt});
     });
 
-     $("#request-bike").click(function() {
-            var $height = $("#id_approx_height").val();
-            if ($height.length == 0) {
-                return;
-            }   
-            var $ht = 0.25*$(window).height();
-            var $wt = 0.25*$(window).width();
-            var $text = $("<h4><i>Thanks for requesting a bike! PennCycle will get in touch with you soon.</i></h4>");
-            var data = {
-                "penncard": "{{ student.penncard }}",
-                "approx_height": $height,
-                "bike_type" : $("#choose-bike-type option:selected").text(),
-                "available_time" : $("#choose-available-time option:selected").text()
-            };
-                
+    $("#request-bike").click(function() {
+        var $height = $("#id_approx_height").val();
+        if ($height.length == 0) {
+            return;
+        }   
+        var $ht = 0.25*$(window).height();
+        var $wt = 0.25*$(window).width();
+        var $text = $("<h4><i>Thanks for requesting a bike! PennCycle will get in touch with you soon.</i></h4>");
+        var data = {
+            "penncard": "{{ student.penncard }}",
+            "approx_height": $height,
+            "bike_type" : $("#choose-bike-type option:selected").text(),
+            "available_time" : $("#choose-available-time option:selected").text()
+        };
+        
+        $.ajax({
+            type: "POST",
+            url: "/bike_request/",
+            data: data,
+            success: function(){
+                $('#request-bike-result').html("Successfully requested your personalized bike. PennCycle will get in touch with you soon.")
+            },
+            error: function(error) {
+                alert(error); 
+            } 
+        });  
+        $modal.open({content: $text, height: $ht, width: $wt});
 
-            $.ajax({
-                type: "POST",
-                url: "/bike_request/",
-                data: data,
-                success: function(){
-                    $('#request-bike-result').html("Successfully requested your personalized bike. PennCycle will get in touch with you soon.")
-                },
-                error: function(error) {
-                    alert(error); 
-                } 
-            });  
-            $modal.open({content: $text, height: $ht, width: $wt});
-
-        });
+    });
 
 </script>
 

@@ -52,6 +52,7 @@ urlpatterns = patterns(
     (r'^combo/$', combo),
     (r'^modify_payment/$', modify_payment),
     (r'^bike_request/$', bike_request),
+    (r'^group_ride_request/$',group_ride_request),
 
 
     # Twilio

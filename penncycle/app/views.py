@@ -382,3 +382,6 @@ def thanks(request):
         'thanks.html',
         RequestContext(request, {})
     )
+
+def group_ride_request(request):
+    pass
