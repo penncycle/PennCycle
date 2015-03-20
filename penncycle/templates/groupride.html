@@ -10,74 +10,74 @@
 <div class="well">
     <!-- Name, Organization, Position in Organization, Destination of Ride, Approximate duration of the ride, total number of bikes needed (maximum 10). If you would like a PennCycle representative to lead the ride, please indicate as such. -->
     <h1>Request a Group ride</h1>
-    <div class="span3">
-        <div class="chzn-container">
-            <label class="control-label requiredField">
-                Student Name<span class="asteriskField">*</span>
-            </label>
-            <div class="controls">
-                <input class="textInput" id="id_student_name" maxlength="20" name="student_name" type="text" />
+    <div class="row-fluid">
+        <div class="span5 offset1">
+            <div class="control-group">
+                <label class="control-label requiredField">
+                    Student Name<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input class="textInput" id="id_student_name" maxlength="20" name="student_name" type="text" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label requiredField">
+                    Organization<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input class="textInput" id="id_organization" maxlength="20" name="organization" type="text" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label requiredField">
+                    Position in organization<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input class="textInput" id="id_position_in_organization" maxlength="20" name="position_in_organization" type="text"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label requiredField">
+                    Would you like a PennCycle representative to accompany you?<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <select class="select" id="choose-pc-representative" name="pc-representative" data-placeholder="Would you like a PennCycle representative to accompany you?" style="width:250px;" class="chzn-select" tabindex="1">
+                        <option value="Yes" selected="selected">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
             </div>
         </div>
         <br/>
-        <div class="chzn-container">
-            <label class="control-label requiredField">
-                Organization<span class="asteriskField">*</span>
-            </label>
-            <div class="controls">
-                <input class="textInput" id="id_organization" maxlength="20" name="organization" type="text" />
+        <div class="span6">
+            <div class="control-group">
+                <label class="control-label requiredField">
+                    Destination of Ride<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input class="textInput" id="id_destination_of_ride" maxlength="20" name="id_destination_of_ride" type="text" />
+                </div>
             </div>
-        </div>
-        <div class="chzn-container">
-            <label class="control-label requiredField">
-                Position in organization<span class="asteriskField">*</span>
-            </label>
-            <div class="controls">
-                <input class="textInput" id="id_position_in_organization" maxlength="20" name="position_in_organization" type="text"/>
+            <div class="control-group">
+                <label class="control-label requiredField">
+                    Approximate Duration<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input class="textInput" id="id_approximate_duration" maxlength="20" name="approximate_duration" type="text" />
+                </div>
             </div>
-        </div>
-    </div>
-    <br/>
-    <div class="span9">
-        <div class="chzn-container">
-            <label class="control-label requiredField">
-                Destination of Ride<span class="asteriskField">*</span>
-            </label>
-            <div class="controls">
-                <input class="textInput" id="id_destination_of_ride" maxlength="20" name="id_destination_of_ride" type="text" />
+            <div class="control-group">
+                <label class="control-label requiredField">
+                    Total number of Bikes needed<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input class="textInput" id="id_total_bikes" maxlength="20" name="total_bikes" type="text" />
+                </div>
             </div>
+            <br/>
         </div>
-        <br/>
-        <div class="chzn-container">
-            <label class="control-label requiredField">
-                Approximate Duration<span class="asteriskField">*</span>
-            </label>
-            <div class="controls">
-                <input class="textInput" id="id_approximate_duration" maxlength="20" name="approximate_duration" type="text" />
-            </div>
-        </div>
-        <div class="chzn-container">
-            <label class="control-label requiredField">
-                Total number of Bikes needed<span class="asteriskField">*</span>
-            </label>
-            <div class="controls">
-                <input class="textInput" id="id_total_bikes" maxlength="20" name="total_bikes" type="text" />
-            </div>
-        </div>
-        <div class="chzn-container">
-            <label class="control-label requiredField">
-                Would you like a PennCycle representative to accompany you?<span class="asteriskField">*</span>
-            </label>
-            <div class="controls">
-                <select class="select" id="choose-pc-representative" name="pc-representative" data-placeholder="Would you like a PennCycle representative to accompany you?" style="width:250px;" class="chzn-select" tabindex="1">
-                    <option value="Yes" selected="selected">Yes</option>
-                    <option value="No">No</option>
-                </select>
-            </div>
-        </div>
-        <br/>
-        <button class="btn btn-primary" id="request-group-ride">Request Group Ride</button><br/><br/><span id="request-group-ride"></span>
     </div>    
+    <div class="form-actions"><input type="submit" name="submit" value="Submit" class="btn btn-primary" id="request-group-ride"> </div><span id="request-group-ride"></span>
 </div>
 {% endblock %}
 
@@ -121,3 +121,4 @@
     });
 
 </script>
+{% endblock %}
