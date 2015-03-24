@@ -14,7 +14,7 @@ from django.utils import timezone
 from braces.views import LoginRequiredMixin
 
 from .models import Student, Station, Bike, Payment, Plan, Info
-from util.util import email_razzi, welcome_email, payment_email, email_managers, request_bike_email
+from util.util import email_razzi, welcome_email, payment_email, email_managers, request_bike_email, email_shashank
 from .forms import SignupForm, UpdateForm
 
 #global variables
@@ -149,20 +149,7 @@ class Signup(CreateView):
     def dispatch(self, *args, **kwargs):
         return super(Signup, self).dispatch(*args, **kwargs)
 
-'''class GroupRideRequest(CreateView):
-    model = Student
-    template_name = "groupride.html"
-    form_class = GroupRideForm
 
-    def get_initial(self):
-        pass
-
-    def form_valid(self, form):
-        pass
-
-    @csrf_exempt
-    def dispatch(self, *args, **kwargs):
-        return super(Signup, self).dispatch(*args, **kwargs)'''
 
 
 @require_POST
@@ -310,6 +297,39 @@ def bike_request(request):
     request_bike_email(bike_type, approx_height, available_time, student)
     return HttpResponse('success')
     
+@require_POST
+def group_ride_request(request):
+    data = request.POST
+    student_name = data.get("student_name")
+    organization = data.get("organization")
+    position_in_organization = data.get("position_in_organization")
+    email = data.get("email")
+    destination_of_ride = data.get("destination_of_ride")
+    approximate_duration = data.get("approximate_duration")
+    total_bikes = data.get("total_bikes")
+    require_pc_representative = data.get("require_pc_representative")
+    subject = "Group Ride Request"
+    body = """
+    <p>New Group Ride Request with the following information:</p>
+    <ul>
+        <li>Student Name: {}</li>
+        <li>Organization: {}</li>
+        <li>Position in Organization: {}</li>
+        <li>Email: {}</li>
+        <li>Destination of Ride: {}</li>
+        <li>Approximate Duration: {}</li>
+        <li>Total number of Bikes: {}</li>
+        <li>Does the group require a PennCycle represntative? {}</li>
+    </ul>
+
+    <p>We're choosing the right bike for you and will email you back within 48 hours. Have a question, concern, or suggestion? Email us at penncycle.bikemanager@gmail.com.</p>
+
+    <p>Happy Cycling!</p>
+
+    <p>The PennCycle Team</p>
+        """.format(student_name, organization, position_in_organization, email, destination_of_ride, approximate_duration, total_bikes, require_pc_representative)
+    email_shashank(subject, body)
+    return HttpResponse('success')
 
 class Stats(LoginRequiredMixin, TemplateView):
     template_name = "stats.html"

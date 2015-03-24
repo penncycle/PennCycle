@@ -27,6 +27,14 @@ def email_razzi(message):
         fail_silently=True
     )
 
+def email_shashank(subject, body):
+    send_mail(
+        subject,
+        body,
+        'am.seshank@gmail.com',
+        fail_silently=True
+    )
+
 def email_managers(subject, body):
     send_mail(
         subject,

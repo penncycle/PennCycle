@@ -52,6 +52,14 @@
         <div class="span6">
             <div class="control-group">
                 <label class="control-label requiredField">
+                    Email<span class="asteriskField">*</span>
+                </label>
+                <div class="controls">
+                    <input class="textInput" id="id_email" maxlength="50" name="email" type="text" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label requiredField">
                     Destination of Ride<span class="asteriskField">*</span>
                 </label>
                 <div class="controls">
@@ -92,6 +100,7 @@
         var $destination_of_ride = $("#destination_of_ride").val();
         var $approximate_duration = $("#approximate_duration").val();
         var $total_bikes = $("#total_bikes").val();
+        var $email = $("#id_email").val();
         var $ht = 0.25*$(window).height();
         var $wt = 0.25*$(window).width();
         var $text = $("<h4><i>Thanks for requesting a group ride! PennCycle will get in touch with you soon.</i></h4>");
@@ -99,6 +108,7 @@
             "student_name": $name,
             "organization": $organization,
             "position_in_organization": $position_in_organization,
+            "email": $email,
             "destination_of_ride": $destination_of_ride,
             "approximate_duration": $approximate_duration,
             "total_bikes": $total_bikes,
