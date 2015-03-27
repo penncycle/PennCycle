@@ -28,12 +28,9 @@ def email_razzi(message):
     )
 
 def email_shashank(subject, body):
-    send_mail(
-        subject,
-        body,
-        'am.seshank@gmail.com',
-        fail_silently=True
-    )
+    msg = EmailMultiAlternatives(subject, body, 'messenger@penncycle.org', ['am.seshank@gmail.com'])
+    msg.send()
+
 
 def email_managers(subject, body):
     send_mail(

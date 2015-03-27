@@ -85,12 +85,13 @@
             <br/>
         </div>
     </div>    
-    <div class="form-actions"><input type="submit" name="submit" value="Submit" class="btn btn-primary" id="request-group-ride"> </div><span id="request-group-ride"></span>
+    <div class="form-actions"><input type="submit" name="submit" value="Submit" class="btn btn-primary" id="request-group-ride"> </div><span id="result-message"></span>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ STATIC_URL }}js/django_ajax.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}js/modal-window.js" type="text/javascript"></script>
 <script type="text/javascript">
 
     $("#request-group-ride").click(function() {
@@ -120,13 +121,13 @@
             url: "/group_ride_request/",
             data: data,
             success: function(){
-                $('#request-group-ride').html("Successfully requested your group ride. PennCycle will get in touch with you soon.")
+                $('#result-message').html("Successfully requested your group ride. PennCycle will get in touch with you soon.");
             },
             error: function(error) {
                 alert(error); 
             } 
         });  
-        $modal.open({content: $text, height: $ht, width: $wt});
+        //$modal.open({content: $text, height: $ht, width: $wt});
 
     });
 

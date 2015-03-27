@@ -310,26 +310,20 @@ def group_ride_request(request):
     require_pc_representative = data.get("require_pc_representative")
     subject = "Group Ride Request"
     body = """
-    <p>New Group Ride Request with the following information:</p>
-    <ul>
-        <li>Student Name: {}</li>
-        <li>Organization: {}</li>
-        <li>Position in Organization: {}</li>
-        <li>Email: {}</li>
-        <li>Destination of Ride: {}</li>
-        <li>Approximate Duration: {}</li>
-        <li>Total number of Bikes: {}</li>
-        <li>Does the group require a PennCycle represntative? {}</li>
-    </ul>
+    New Group Ride Request with the following information:
+    
+        Student Name: {}
+        Organization: {}
+        Position in Organization: {}
+        Email: {}
+        Destination of Ride: {}
+        Approximate Duration: {}
+        Total number of Bikes: {}
+        Does the group require a PennCycle represntative? {}
 
-    <p>We're choosing the right bike for you and will email you back within 48 hours. Have a question, concern, or suggestion? Email us at penncycle.bikemanager@gmail.com.</p>
-
-    <p>Happy Cycling!</p>
-
-    <p>The PennCycle Team</p>
         """.format(student_name, organization, position_in_organization, email, destination_of_ride, approximate_duration, total_bikes, require_pc_representative)
     email_shashank(subject, body)
-    return HttpResponse('success')
+    return HttpResponse("success")
 
 class Stats(LoginRequiredMixin, TemplateView):
     template_name = "stats.html"
@@ -402,6 +396,3 @@ def thanks(request):
         'thanks.html',
         RequestContext(request, {})
     )
-
-def group_ride_request(request):
-    pass
