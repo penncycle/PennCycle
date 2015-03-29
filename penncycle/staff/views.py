@@ -65,11 +65,6 @@ class BikeDashboard(LoginRequiredMixin, TemplateView):
         else:
             bikes_for_checkout = available_bikes.filter(location=station)
 
-        for bike in bikes_for_checkout:
-            ride = bike.rides.latest("checkout_time")
-            bike.rider = ride.rider.name
-            bike.return_date = ride.checkin_time
-
         bikes_for_checkin = [b for b in Bike.objects.all() if b.status == 'out']
         for bike in bikes_for_checkin:
             try:
