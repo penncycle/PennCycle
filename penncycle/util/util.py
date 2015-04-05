@@ -27,8 +27,9 @@ def email_razzi(message):
         fail_silently=True
     )
 
-def email_shashank(subject, body):
-    msg = EmailMultiAlternatives(subject, body, 'messenger@penncycle.org', ['am.seshank@gmail.com'])
+
+def email_user(subject, body, mailid):
+    msg = EmailMultiAlternatives(subject, body, 'messenger@penncycle.org', [mailid])
     msg.send()
 
 

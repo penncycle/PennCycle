@@ -410,13 +410,14 @@
             url: "/bike_request/",
             data: data,
             success: function(){
-                $('#request-bike-result').html("Successfully requested your personalized bike. PennCycle will get in touch with you soon.")
+                $modal.open({content: $text, height: $ht, width: $wt});
+                //$('#request-bike-result').html("Successfully requested your personalized bike. PennCycle will get in touch with you soon.")
             },
             error: function(error) {
                 alert(error); 
             } 
         });  
-        //$modal.open({content: $text, height: $ht, width: $wt});
+        //
 
     });
 

@@ -14,7 +14,7 @@ from django.utils import timezone
 from braces.views import LoginRequiredMixin
 
 from .models import Student, Station, Bike, Payment, Plan, Info
-from util.util import email_razzi, welcome_email, payment_email, email_managers, request_bike_email, email_shashank
+from util.util import email_razzi, welcome_email, payment_email, email_managers, request_bike_email, email_user
 from .forms import SignupForm, UpdateForm
 
 #global variables
@@ -80,15 +80,14 @@ class Index(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {
-            "bikes": [
-            {
+            "bikes": [{
                 "name": bike.name,
                 "status": bike.status,
                 "location": bike.location.name,
                 "latitude": bike.location.latitude,
                 "longitude": bike.location.longitude
             } for bike in Bike.objects.all()],
-            "monthPrice": monthPrice, 
+            "monthPrice": monthPrice,
             "semesterPrice": semesterPrice,
             "yearPrice": yearPrice
         }
@@ -250,7 +249,7 @@ def credit(request):
     data = request.POST
     datamap = process_data(data)
     student = datamap['student']
-    plan = datamap['plan'] 
+    plan = datamap['plan']
     payment = Payment(
         amount=plan.cost,
         plan=plan,
@@ -269,8 +268,8 @@ def credit(request):
 def cash(request):
     data = request.POST
     datamap = process_data(data)
-    student = datamap['student'] 
-    plan = datamap['plan'] 
+    student = datamap['student']
+    plan = datamap['plan']
     payment = Payment(
         amount=plan.cost,
         plan=plan,
@@ -309,6 +308,8 @@ def group_ride_request(request):
     total_bikes = data.get("total_bikes")
     require_pc_representative = data.get("require_pc_representative")
     subject = "Group Ride Request"
+    
+    # message to bike manager
     body = """
     New Group Ride Request with the following information:
     
@@ -322,7 +323,21 @@ def group_ride_request(request):
         Does the group require a PennCycle represntative? {}
 
         """.format(student_name, organization, position_in_organization, email, destination_of_ride, approximate_duration, total_bikes, require_pc_representative)
-    email_shashank(subject, body)
+    email_managers(subject, body)
+    
+    # message to user
+    body = """
+    Your group ride request to {} for {} bikes is under process. PennCycle will get back to you at the earliest.
+
+    Thanks for using PennCycle.
+
+    Have a question, concern, or suggestion? Email us at messenger@penncycle.org.
+
+    Happy Cycling!
+
+    The PennCycle Team.
+    """.format(destination_of_ride, total_bikes)
+    email_user(subject, body, email)
     return HttpResponse("success")
 
 class Stats(LoginRequiredMixin, TemplateView):
@@ -382,9 +397,9 @@ class Bikes(TemplateView):
     def get_context_data(self):
         context = super(Bikes, self).get_context_data()
         stations = Station.objects.filter(active=True)
-        bike_set = set();
+        bike_set = set()
         for s in stations:
-            bike_set.update(set(s.bikes.filter(status="available"))) 
+            bike_set.update(set(s.bikes.filter(status="available")))
             
         context['bikes'] = bike_set
         return context

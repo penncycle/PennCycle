@@ -42,8 +42,8 @@
                 </label>
                 <div class="controls">
                     <select class="select" id="choose-pc-representative" name="pc-representative" data-placeholder="Would you like a PennCycle representative to accompany you?" style="width:250px;" class="chzn-select" tabindex="1">
-                        <option value="Yes" selected="selected">Yes</option>
-                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No" selected="selected">No</option>
                     </select>
                 </div>
             </div>
@@ -96,15 +96,16 @@
 
     $("#request-group-ride").click(function() {
         var $name = $("#id_student_name").val();
-        var $organization = $("#organization").val();
-        var $position_in_organization = $("#position_in_organization").val();
-        var $destination_of_ride = $("#destination_of_ride").val();
-        var $approximate_duration = $("#approximate_duration").val();
-        var $total_bikes = $("#total_bikes").val();
+        var $organization = $("#id_organization").val();
+        var $position_in_organization = $("#id_position_in_organization").val();
+        var $destination_of_ride = $("#id_destination_of_ride").val();
+        var $approximate_duration = $("#id_approximate_duration").val();
+        var $total_bikes = $("#id_total_bikes").val();
         var $email = $("#id_email").val();
         var $ht = 0.25*$(window).height();
         var $wt = 0.25*$(window).width();
         var $text = $("<h4><i>Thanks for requesting a group ride! PennCycle will get in touch with you soon.</i></h4>");
+        var $is_pc_representative_req = $("#choose-pc-representative").val();
         var data = {
             "student_name": $name,
             "organization": $organization,
@@ -113,22 +114,22 @@
             "destination_of_ride": $destination_of_ride,
             "approximate_duration": $approximate_duration,
             "total_bikes": $total_bikes,
-            "require_pc_representative" : $("#choose-pc-representative:selected").text(),
-        };
-        
+            "require_pc_representative" : $is_pc_representative_req
+        }
+;        
         $.ajax({
             type: "POST",
             url: "/group_ride_request/",
             data: data,
             success: function(){
+                $modal.open({content: $text, height: $ht, width: $wt});
+                //alert("Successfully requested your group ride. PennCycle will get in touch with you soon.");
                 $('#result-message').html("Successfully requested your group ride. PennCycle will get in touch with you soon.");
             },
             error: function(error) {
                 alert(error); 
             } 
         });  
-        //$modal.open({content: $text, height: $ht, width: $wt});
-
     });
 
 </script>
