@@ -411,7 +411,7 @@
             data: data,
             success: function(){
                 $modal.open({content: $text, height: $ht, width: $wt});
-                //$('#request-bike-result').html("Successfully requested your personalized bike. PennCycle will get in touch with you soon.")
+                $('#request-bike-result').html("Successfully requested your personalized bike. PennCycle will get in touch with you soon.");
             },
             error: function(error) {
                 alert(error); 
@@ -422,6 +422,6 @@
     });
 
 </script>
-
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/modal-window.css"/>
 
 {% endblock %}
