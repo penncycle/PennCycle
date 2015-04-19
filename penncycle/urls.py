@@ -10,7 +10,7 @@ from app.views import (
     Index, Signup, Locations, Bikes, welcome, StudentUpdate,
     verify_payment, verify_waiver, verify_pin, lookup,
     bursar, credit, cash, combo, modify_payment, Stats,
-    thanks, bike_request, group_ride_request
+    thanks, bike_request, group_ride_request, waiver
 )
 from app.dump import dump
 from mobile.views import sms, send_pin
@@ -37,7 +37,7 @@ urlpatterns = patterns(
     (r'^safety/$', TemplateView.as_view(template_name="safety.html")),
     (r'^safety-overview/$', TemplateView.as_view(template_name="safety_overview.html")),
     (r'^thank.*$', thanks),
-    (r'^waiver/$', TemplateView.as_view(template_name="waiver_7-29-14.html")),
+    (r'^waiver/$', waiver),
     (r'^groupride/$', TemplateView.as_view(template_name="groupride.html")),
 
     # Backend-related

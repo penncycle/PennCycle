@@ -61,18 +61,34 @@ def welcome(request):
     penncard = request.session.get('penncard')
     try:
         student = Student.objects.get(penncard=penncard)
+        # check if he has signed waiver
+        if student.waiver_signed is False:
+            return HttpResponseRedirect("/waiver/")
     except Student.DoesNotExist:
         return HttpResponseRedirect("/signin/")
     
     context = {
-        "student": student, 
+        "student": student,
         "current_payment": student.current_payment,
         "can_ride": student.can_ride,
-        "monthPrice": monthPrice, 
+        "monthPrice": monthPrice,
         "semesterPrice": semesterPrice,
         "yearPrice": yearPrice
     }
     return render_to_response("welcome.html", RequestContext(request, context))
+
+def waiver(request):
+    penncard = request.session.get('penncard')
+    try:
+        student = Student.objects.get(penncard=penncard)
+        if student.waiver_signed is True:
+            return HttpResponseRedirect('/welcome')
+        else:
+            return render_to_response('waiver_7-29-14.html', context_instance=RequestContext(request))
+    except Student.DoesNotExist:
+        return HttpResponseRedirect('/signin')
+    
+
 
 
 class Index(TemplateView):
