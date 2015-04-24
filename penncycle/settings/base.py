@@ -7,9 +7,10 @@ import dj_database_url
 
 ADMINS = (
     ('Razzi Abuissa', 'razzi53@gmail.com'),
-    ('Marcus Pan', 'marcuspanje@gmail.com'),
-    ('Peter Bryan', 'peterbbryan@gmail.com'),
-    ('Brian Shi', 'brishi@seas.upenn.edu')
+    ('Shashank', 'agshash@seas.upenn.edu'),
+    ('Ankita', 'ankitac@seas.upenn.edu'),
+    ('Razzi Abuissa', 'razzi53@gmail.com'),
+    ('Peter Bryan', 'peterbbryan@gmail.com')
 )
 
 MANAGERS = ADMINS
