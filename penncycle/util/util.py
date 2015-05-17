@@ -37,7 +37,7 @@ def email_managers(subject, body):
     send_mail(
         subject,
         body,
-        'messenger@penncycle.org', ['messenger@penncycle.org'],
+        'messenger@penncycle.org', ['messenger@penncycle.org', 'checkouts@penncycle.org'],
         fail_silently=True
     )
 
@@ -254,6 +254,6 @@ The PennCycle Team
 
 <p>The PennCycle Team</p>
     """.format(student.name, approx_height, bike_type, available_time, plan_info)
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email, "checkouts@penncycle.org",])
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email, "checkouts@penncycle.org", 'messenger@penncycle.org'])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
