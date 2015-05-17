@@ -1,4 +1,4 @@
-request_bike_emailfrom django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django_twilio.client import twilio_client
 
 
@@ -37,7 +37,7 @@ def email_managers(subject, body):
     send_mail(
         subject,
         body,
-        'messenger@penncycle.org', ['messenger@penncycle.org', 'checkouts@penncycle.org'],
+        'messenger@penncycle.org', ['messenger@penncycle.org'],
         fail_silently=True
     )
 
@@ -231,7 +231,7 @@ Bike type: {}
 Available times to collect bike from Quaker Corner: {}
 Current Plan: {}  
 
-We're choosing the right bike for you and will email you back within 48 hours. Have a question, concern, or suggestion? Email us at checkouts@penncycle.org.
+We're choosing the right bike for you and will email you back within 48 hours. Have a question, concern, or suggestion? Email us at penncycle.bikemanager@gmail.com.
 
 Happy Cycling!
 
@@ -254,6 +254,6 @@ The PennCycle Team
 
 <p>The PennCycle Team</p>
     """.format(student.name, approx_height, bike_type, available_time, plan_info)
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email, "checkouts@penncycle.org", 'messenger@penncycle.org'])
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email, "penncycle.bikemanager@gmail.com",])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
