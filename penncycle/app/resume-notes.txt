@@ -1,0 +1,21 @@
+Developed statistical model and huresitics based algorithm using Chi-Square and auto correlation to detect seasonal patterns in resource consumption of middleware system components using Matlab and SQL. 
+
+WLS
+ runs on JVM deployed on Host
+WLS resources are 
+a) jdbc connection pool (active connections)
+b) JMS Queues (look up from the excel spreadsheet)
+
+JVM 
+Heap usage (heap after gc)
+
+Host
+a) CPU
+b) host memory
+
+
+Usage:
+Insights into capacity utilization of resources to determine time periods of under utilization, (over) resource constraints
+
+Determine requirements for moving from on-prem deployment to private cloud
+
