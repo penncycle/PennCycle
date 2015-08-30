@@ -48,7 +48,7 @@ def welcome_email(student):
     text_content = """
 Thanks for joining PennCycle.
 
-Your PennCycle PIN is {}. You can use it to log in at penncycle.org/login. 
+Your PennCycle PIN is {}. You can use it to log in at penncycle.org/login.
 
 To ride, you first need to purchase a PennCycle plan, either online or in-person at Quaker Corner. Then visit us at Quaker Corner to check-out a bike. Helmets are required for riding and can also be rented or purchased at Quaker Corner.
 

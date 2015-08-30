@@ -154,7 +154,13 @@ class Signup(CreateView):
         messages.info(self.request,
             "Your pin is {}. "
             "You will need it to log on in the future.".format(student.pin))
-
+        
+        plan = Plan.objects.get(student)
+        body = """
+            {} has signed up for a {}.
+            You can reach him at {}.
+        """.format(student.name, plan.name, student.email)
+        email_managers("New Signup", body)
 
         welcome_email(student)
         self.request.session['penncard'] = student.penncard
@@ -309,6 +315,25 @@ def bike_request(request):
     approx_height = data.get("approx_height")
     bike_type = data.get("bike_type")
     available_time = data.get("available_time")
+
+    current_payment = student.current_payment
+    plan_info = ""
+    if (current_payment):
+        plan_info = "{}, expiring on {}".format(current_payment.plan.name, current_payment.end_date.strftime("%m/%d/%y"))
+    else:
+        plan_info = "You currently don't have a plan. Please purchase a plan when you collect your bike."
+    plan_info += """
+Dear {},
+
+New PennCycle Bike request with the following info:
+
+Approximate height: {}
+Bike type: {}
+Available times to collect bike from Quaker Corner: {}
+Current Plan: {}
+    """.format(student.name, approx_height, bike_type, available_time, plan_info)
+    email_managers("New PennCycle Bike request", plan_info)
+
     request_bike_email(bike_type, approx_height, available_time, student)
     return HttpResponse('success')
     
