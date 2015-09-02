@@ -155,11 +155,11 @@ class Signup(CreateView):
             "Your pin is {}. "
             "You will need it to log on in the future.".format(student.pin))
         
-        plan = Plan.objects.get(student)
+        # plan = Plan.objects.get(student)
         body = """
-            {} has signed up for a {}.
+            {} has signed up for a PennCycle plan.
             You can reach him at {}.
-        """.format(student.name, plan.name, student.email)
+        """.format(student.name, student.email)
         email_managers("New Signup", body)
 
         welcome_email(student)
